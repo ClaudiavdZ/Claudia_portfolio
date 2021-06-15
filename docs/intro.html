@@ -378,7 +378,7 @@ Figure 2.1: Here is a nice figure!
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="intro.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb8-2"><a href="intro.html#cb8-2" aria-hidden="true" tabindex="-1"></a>ce_liq_flow_062 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;docs/CE.LIQ.FLOW.062_Tidydata.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="dv">1</span>)</span>
+<span id="cb8-2"><a href="intro.html#cb8-2" aria-hidden="true" tabindex="-1"></a>ce_liq_flow_062 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;data/CE.LIQ.FLOW.062_Tidydata.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="dv">1</span>)</span>
 <span id="cb8-3"><a href="intro.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#werkt wel in console niet in script</span></span></code></pre></div>
 <p>C. Inspect the data types of columns RawData, compName and compConcentration. What types would you expect from the experimental description above. Have the data types been correctly assigned during the importing of the data into R?</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="intro.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(ce_liq_flow_062<span class="sc">$</span>RawData)</span></code></pre></div>
