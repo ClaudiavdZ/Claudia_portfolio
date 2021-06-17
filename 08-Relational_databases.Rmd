@@ -1,4 +1,4 @@
-relational databases
+# Relational databases
 
 TIPS
 
@@ -61,9 +61,10 @@ dbListTables(con)
 #dbWriteTable(con, "flu_data", flu_data)
 #dbWriteTable(con, "gapminder", gapminder)
 
-library(janitor)
-gapminder_usd <- as.data.frame(t(gapminder))
-gapminder_usd <- gapminder_usd %>% row_to_names(row_number = 1)
+# library(janitor)
+# gapminder_usd <- as.data.frame(t(gapminder))
+# gapminder_usd <- gapminder_usd %>% row_to_names(row_number = 1)
+
 
 flu_usd <- gather(
   flu_data,
@@ -71,12 +72,28 @@ flu_usd <- gather(
   value = "flu",
   Argentina:Uruguay
 )
+#seperate year from month and day
+flu_usd <- separate(flu_usd, Date, into = c("year", "month", "day"),  sep = "-")
+#count sum of flu
+flu_usd <- aggregate(flu_usd$flu, by=list(year=flu_usd$year, country=flu_usd$country), FUN=sum)
+flu_usd <- flu_usd %>% rename(flu = x)
+flu_usd$year <- as.integer(flu_usd$year)  
+
 dengue_usd <- gather(
   dengue_data,
   key = "country",
   value = "dengue",
   Argentina:Venezuela
 )
-#jaar van datum scheiden en gemiddelde per jaar berekenen
+dengue_usd <- separate(dengue_usd, Date, into = c("year", "month", "day"),  sep = "-")
+dengue_usd <- aggregate(dengue_usd$dengue, by=list(year=dengue_usd$year, country=dengue_usd$country), FUN=sum)
+dengue_usd <- dengue_usd %>% rename(dengue = x)
+dengue_usd$year <- as.integer(dengue_usd$year)
+
+alltogether <- left_join(flu_usd, gapminder, by = c("country", "year"))
+alltogether <- left_join(alltogether, dengue_usd , by = c("country", "year"))
+
+#infant_mortelity firtelety life expantie door flu and dengue in verschillende jaren in verschillende landen
+#en beetje statestiek
 ```
 

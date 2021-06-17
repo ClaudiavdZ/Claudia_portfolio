@@ -45,6 +45,7 @@ Read the article diagonally to check if is indeed a primary article describing e
 Include the reference to this article in your Rmd file
 Score the article on the basis of the above ‘Repita’ criteria
 Write an Rmarkdown report on your findings, including the table above and some information about the article such as general aim, short methods and results. If data is available, try including some
+# Open peer review 
 Store the source Rmd and knitted HTML in a folder called ‘Rmd’ in your course RStudio project. You will need it again later in the course
 PART 2 To complete this assignment you will have to execute activity H to P
 
