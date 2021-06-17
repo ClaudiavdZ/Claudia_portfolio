@@ -1,4 +1,3 @@
-prerequisites
 introduction
 reproducible-research
 guerrilla-analytics
