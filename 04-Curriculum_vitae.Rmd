@@ -1,0 +1,3 @@
+# Curriculum vitae
+
+![CV](data/CV/cvfoto.png){ width=100%}

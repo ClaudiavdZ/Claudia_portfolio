@@ -1,0 +1,18 @@
+# Guerrilla analytics
+
+In this assignment I cleaned up my projects according to the Guerrilla analytics.The result can be seen below onder. 
+
+## Daur2 project
+![Daur](data/Gurilla/Daur2.png){ width=70%}
+
+
+## Portfolio project
+![Portfolio](data/Gurilla/portfolio.png){ width=70%}
+
+
+## Project project
+![Project](data/Gurilla/project.png){ width=70%}
+
+
+
+

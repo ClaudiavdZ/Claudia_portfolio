@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 43 We performed all-subsets regression using the regsubsets() function from the leaps package. | My portfolio</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 43 We performed all-subsets regression using the regsubsets() function from the leaps package. | My portfolio" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 43 We performed all-subsets regression using the regsubsets() function from the leaps package. | My portfolio" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+<meta name="author" content="Claudia van der Zijden" />
+
+
+<meta name="date" content="2021-06-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="model-4-eliminates-living-with-somebody.html"/>
+<link rel="next" href="we-analyzed-the-three-best-models-for-two-predictor-subset-sizes-.html"/>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="reproducible-research.html"><a href="reproducible-research.html"><i class="fa fa-check"></i><b>2</b> Reproducible research</a></li>
+<li class="chapter" data-level="3" data-path="my-own-package.html"><a href="my-own-package.html"><i class="fa fa-check"></i><b>3</b> My own package</a></li>
+<li class="chapter" data-level="4" data-path="parameters.html"><a href="parameters.html"><i class="fa fa-check"></i><b>4</b> Parameters</a></li>
+<li class="chapter" data-level="5" data-path="looking-ahead.html"><a href="looking-ahead.html"><i class="fa fa-check"></i><b>5</b> Looking ahead</a></li>
+<li class="chapter" data-level="6" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><b>6</b> Appendix</a></li>
+<li class="chapter" data-level="7" data-path="sample-n-1100.html"><a href="sample-n-1100.html"><i class="fa fa-check"></i><b>7</b> SAMPLE N = 1100</a></li>
+<li class="chapter" data-level="8" data-path="distribution-by-sex.html"><a href="distribution-by-sex.html"><i class="fa fa-check"></i><b>8</b> Distribution by sex:</a></li>
+<li class="chapter" data-level="9" data-path="central-tendency-measures-by-age-entire-sample.html"><a href="central-tendency-measures-by-age-entire-sample.html"><i class="fa fa-check"></i><b>9</b> Central tendency measures by age (entire sample)</a></li>
+<li class="chapter" data-level="10" data-path="mean.html"><a href="mean.html"><i class="fa fa-check"></i><b>10</b> Mean</a></li>
+<li class="chapter" data-level="11" data-path="standard-deviation-sd.html"><a href="standard-deviation-sd.html"><i class="fa fa-check"></i><b>11</b> Standard deviation (sd)</a></li>
+<li class="chapter" data-level="12" data-path="standard-error-sem.html"><a href="standard-error-sem.html"><i class="fa fa-check"></i><b>12</b> Standard error (sem)</a></li>
+<li class="chapter" data-level="13" data-path="median.html"><a href="median.html"><i class="fa fa-check"></i><b>13</b> median</a></li>
+<li class="chapter" data-level="14" data-path="to-test-skewness-and-kurtosis-criteria-range-of-acceptable-values-or-near-to-3-and-3-brown-2006-.html"><a href="to-test-skewness-and-kurtosis-criteria-range-of-acceptable-values-or-near-to-3-and-3-brown-2006-.html"><i class="fa fa-check"></i><b>14</b> To test Skewness and Kurtosis # Criteria: range of acceptable values or near to -3 and +3 (Brown, 2006).</a></li>
+<li class="chapter" data-level="15" data-path="reference-brown-t-a-2006-confirmatory-factor-analysis-for-applied-research-new-york-guilford-press-.html"><a href="reference-brown-t-a-2006-confirmatory-factor-analysis-for-applied-research-new-york-guilford-press-.html"><i class="fa fa-check"></i><b>15</b> Reference: Brown, T. A. (2006). Confirmatory factor analysis for applied research. New York: Guilford Press.</a></li>
+<li class="chapter" data-level="16" data-path="depression.html"><a href="depression.html"><i class="fa fa-check"></i><b>16</b> DEPRESSION</a></li>
+<li class="chapter" data-level="17" data-path="anxiety-trait.html"><a href="anxiety-trait.html"><i class="fa fa-check"></i><b>17</b> ANXIETY TRAIT</a></li>
+<li class="chapter" data-level="18" data-path="suicidal-risk.html"><a href="suicidal-risk.html"><i class="fa fa-check"></i><b>18</b> SUICIDAL RISK</a></li>
+<li class="chapter" data-level="19" data-path="for-addresing-the-first-aim-we-divided-the-entire-sample-into-three-groups.html"><a href="for-addresing-the-first-aim-we-divided-the-entire-sample-into-three-groups.html"><i class="fa fa-check"></i><b>19</b> For addresing the first aim, we divided the entire sample into three groups:</a></li>
+<li class="chapter" data-level="20" data-path="load-this-library-for-computing-effect-sizes.html"><a href="load-this-library-for-computing-effect-sizes.html"><i class="fa fa-check"></i><b>20</b> Load this library for computing effect sizes:</a>
+<ul>
+<li class="chapter" data-level="20.0.1" data-path="load-this-library-for-computing-effect-sizes.html"><a href="load-this-library-for-computing-effect-sizes.html#differences-in-specific-mental-health-state-indicators-by-three-sub-periods-of-quarantine"><i class="fa fa-check"></i><b>20.0.1</b> Differences in specific mental health state indicators by three sub-periods of quarantine</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="ext-post-first-quarantine-extension.html"><a href="ext-post-first-quarantine-extension.html"><i class="fa fa-check"></i><b>21</b> 1. EXT POST = first quarantine extension</a></li>
+<li class="chapter" data-level="22" data-path="ext-post-secondthird-quarantine-extensions.html"><a href="ext-post-secondthird-quarantine-extensions.html"><i class="fa fa-check"></i><b>22</b> 2./3. EXT POST = second/third quarantine extensions</a></li>
+<li class="chapter" data-level="23" data-path="ext-post-fourth-quarantine-extension.html"><a href="ext-post-fourth-quarantine-extension.html"><i class="fa fa-check"></i><b>23</b> 4. EXT POST = fourth quarantine extension</a></li>
+<li class="chapter" data-level="24" data-path="depression-1.html"><a href="depression-1.html"><i class="fa fa-check"></i><b>24</b> DEPRESSION</a></li>
+<li class="chapter" data-level="25" data-path="significant-differences.html"><a href="significant-differences.html"><i class="fa fa-check"></i><b>25</b> significant differences</a></li>
+<li class="chapter" data-level="26" data-path="ext-post-1-ext-post-p-adj-0-018.html"><a href="ext-post-1-ext-post-p-adj-0-018.html"><i class="fa fa-check"></i><b>26</b> 2./3. EXT POST-1. EXT POST p adj 0.018</a></li>
+<li class="chapter" data-level="27" data-path="ext-post-1-ext-post-p-adj-1-3e-05.html"><a href="ext-post-1-ext-post-p-adj-1-3e-05.html"><i class="fa fa-check"></i><b>27</b> 4. EXT POST-1. EXT POST p adj 1.3e-05</a></li>
+<li class="chapter" data-level="28" data-path="anxiety-state.html"><a href="anxiety-state.html"><i class="fa fa-check"></i><b>28</b> ANXIETY STATE</a></li>
+<li class="chapter" data-level="29" data-path="figure-s2-supplementary-material.html"><a href="figure-s2-supplementary-material.html"><i class="fa fa-check"></i><b>29</b> Figure S2 (Supplementary material)</a></li>
+<li class="chapter" data-level="30" data-path="anxiety-trait-1.html"><a href="anxiety-trait-1.html"><i class="fa fa-check"></i><b>30</b> ANXIETY TRAIT</a></li>
+<li class="chapter" data-level="31" data-path="figure-s3-supplementary-material.html"><a href="figure-s3-supplementary-material.html"><i class="fa fa-check"></i><b>31</b> Figure S3 (Supplementary material)</a></li>
+<li class="chapter" data-level="32" data-path="suicidal-risk-1.html"><a href="suicidal-risk-1.html"><i class="fa fa-check"></i><b>32</b> SUICIDAL RISK</a></li>
+<li class="chapter" data-level="33" data-path="figure-s4-supplementary-material.html"><a href="figure-s4-supplementary-material.html"><i class="fa fa-check"></i><b>33</b> Figure S4 (Supplementary material)</a>
+<ul>
+<li class="chapter" data-level="33.1" data-path="figure-s4-supplementary-material.html"><a href="figure-s4-supplementary-material.html#multiple-linear-regressions"><i class="fa fa-check"></i><b>33.1</b> 2) Multiple linear regressions:</a></li>
+</ul></li>
+<li class="chapter" data-level="34" data-path="we-performed-stepwise-selection-direction-both-using-the-stepaic-function-from-the-mass-package-.html"><a href="we-performed-stepwise-selection-direction-both-using-the-stepaic-function-from-the-mass-package-.html"><i class="fa fa-check"></i><b>34</b> We performed stepwise selection (direction = both) using the stepAIC() function from the MASS package.</a></li>
+<li class="chapter" data-level="35" data-path="stepwise-regression.html"><a href="stepwise-regression.html"><i class="fa fa-check"></i><b>35</b> Stepwise Regression</a></li>
+<li class="chapter" data-level="36" data-path="confidence-interval-of-best-fitted-model.html"><a href="confidence-interval-of-best-fitted-model.html"><i class="fa fa-check"></i><b>36</b> 95% Confidence interval of best-fitted model:</a></li>
+<li class="chapter" data-level="37" data-path="error-rate-of-best-fitted-model.html"><a href="error-rate-of-best-fitted-model.html"><i class="fa fa-check"></i><b>37</b> ERROR RATE of best-fitted model:</a></li>
+<li class="chapter" data-level="38" data-path="table-1.html"><a href="table-1.html"><i class="fa fa-check"></i><b>38</b> TABLE 1:</a></li>
+<li class="chapter" data-level="39" data-path="model-1-initial-model.html"><a href="model-1-initial-model.html"><i class="fa fa-check"></i><b>39</b> Model 1: INITIAL MODEL:</a></li>
+<li class="chapter" data-level="40" data-path="model-2-eliminates-province.html"><a href="model-2-eliminates-province.html"><i class="fa fa-check"></i><b>40</b> Model 2 eliminates PROVINCE:</a></li>
+<li class="chapter" data-level="41" data-path="model-3-eliminates-education.html"><a href="model-3-eliminates-education.html"><i class="fa fa-check"></i><b>41</b> Model 3 eliminates EDUCATION:</a></li>
+<li class="chapter" data-level="42" data-path="model-4-eliminates-living-with-somebody.html"><a href="model-4-eliminates-living-with-somebody.html"><i class="fa fa-check"></i><b>42</b> Model 4 eliminates LIVING_WITH_SOMEBODY:</a>
+<ul>
+<li class="chapter" data-level="42.1" data-path="model-4-eliminates-living-with-somebody.html"><a href="model-4-eliminates-living-with-somebody.html#considering-the-predictors-included-in-the-best-fitted-model-i.e.-stepwith-in-this-group-we-analyzed-the-smallest-possible-linear-model-for-each-specific-mhs-indicator-by-means-of-all-two-predictor-combinations."><i class="fa fa-check"></i><b>42.1</b> Considering the predictors included in the best-fitted model (i.e., stepwith) in this group, we analyzed the smallest possible linear model for each specific MHS indicator by means of all two-predictor combinations.</a></li>
+</ul></li>
+<li class="chapter" data-level="43" data-path="we-performed-all-subsets-regression-using-the-regsubsets-function-from-the-leaps-package-.html"><a href="we-performed-all-subsets-regression-using-the-regsubsets-function-from-the-leaps-package-.html"><i class="fa fa-check"></i><b>43</b> We performed all-subsets regression using the regsubsets() function from the leaps package.</a></li>
+<li class="chapter" data-level="44" data-path="we-analyzed-the-three-best-models-for-two-predictor-subset-sizes-.html"><a href="we-analyzed-the-three-best-models-for-two-predictor-subset-sizes-.html"><i class="fa fa-check"></i><b>44</b> We analyzed the three best models for two-predictor subset sizes.</a></li>
+<li class="chapter" data-level="45" data-path="first-age-suic-attempt-history-no.html"><a href="first-age-suic-attempt-history-no.html"><i class="fa fa-check"></i><b>45</b> First: AGE + SUIC_ATTEMPT_HISTORY (no):</a></li>
+<li class="chapter" data-level="46" data-path="second-sex-woman-suic-attempt-history-no.html"><a href="second-sex-woman-suic-attempt-history-no.html"><i class="fa fa-check"></i><b>46</b> Second: SEX (woman) + SUIC_ATTEMPT_HISTORY (no):</a></li>
+<li class="chapter" data-level="47" data-path="third-suic-attempt-history-no-sub-periods-4-ext-post.html"><a href="third-suic-attempt-history-no-sub-periods-4-ext-post.html"><i class="fa fa-check"></i><b>47</b> Third: SUIC_ATTEMPT_HISTORY (no) + SUB PERIODS (4. EXT POST):</a></li>
+<li class="chapter" data-level="48" data-path="stepwise-regression-1.html"><a href="stepwise-regression-1.html"><i class="fa fa-check"></i><b>48</b> Stepwise Regression</a></li>
+<li class="chapter" data-level="49" data-path="confidence-interval-of-best-fitted-model-1.html"><a href="confidence-interval-of-best-fitted-model-1.html"><i class="fa fa-check"></i><b>49</b> 95% Confidence interval of best-fitted model:</a></li>
+<li class="chapter" data-level="50" data-path="error-rate-of-best-fitted-model-1.html"><a href="error-rate-of-best-fitted-model-1.html"><i class="fa fa-check"></i><b>50</b> ERROR RATE of best-fitted model:</a></li>
+<li class="chapter" data-level="51" data-path="table-1-1.html"><a href="table-1-1.html"><i class="fa fa-check"></i><b>51</b> TABLE 1:</a></li>
+<li class="chapter" data-level="52" data-path="model-1-initial-model-1.html"><a href="model-1-initial-model-1.html"><i class="fa fa-check"></i><b>52</b> Model 1: INITIAL MODEL:</a></li>
+<li class="chapter" data-level="53" data-path="model-2-eliminates-province-1.html"><a href="model-2-eliminates-province-1.html"><i class="fa fa-check"></i><b>53</b> Model 2 eliminates PROVINCE:</a></li>
+<li class="chapter" data-level="54" data-path="model-3-eliminates-education-1.html"><a href="model-3-eliminates-education-1.html"><i class="fa fa-check"></i><b>54</b> Model 3 eliminates EDUCATION:</a></li>
+<li class="chapter" data-level="55" data-path="model-4-eliminates-economic-income.html"><a href="model-4-eliminates-economic-income.html"><i class="fa fa-check"></i><b>55</b> Model 4 eliminates ECONOMIC_INCOME:</a></li>
+<li class="chapter" data-level="56" data-path="model-5-eliminates-living-with-somebody.html"><a href="model-5-eliminates-living-with-somebody.html"><i class="fa fa-check"></i><b>56</b> Model 5 eliminates LIVING_WITH_SOMEBODY:</a>
+<ul>
+<li class="chapter" data-level="56.1" data-path="model-5-eliminates-living-with-somebody.html"><a href="model-5-eliminates-living-with-somebody.html#considering-the-predictors-included-in-the-best-fitted-model-i.e.-stepwith-in-this-group-we-analyzed-the-smallest-possible-linear-model-for-each-specific-mhs-indicator-by-means-of-all-two-predictor-combinations.-1"><i class="fa fa-check"></i><b>56.1</b> Considering the predictors included in the best-fitted model (i.e., stepwith) in this group, we analyzed the smallest possible linear model for each specific MHS indicator by means of all two-predictor combinations.</a></li>
+</ul></li>
+<li class="chapter" data-level="57" data-path="we-performed-all-subsets-regression-using-the-regsubsets-function-from-the-leaps-package-1.html"><a href="we-performed-all-subsets-regression-using-the-regsubsets-function-from-the-leaps-package-1.html"><i class="fa fa-check"></i><b>57</b> We performed all-subsets regression using the regsubsets() function from the leaps package.</a></li>
+<li class="chapter" data-level="58" data-path="we-analyzed-the-three-best-models-for-two-predictor-subset-sizes-1.html"><a href="we-analyzed-the-three-best-models-for-two-predictor-subset-sizes-1.html"><i class="fa fa-check"></i><b>58</b> We analyzed the three best models for two-predictor subset sizes.</a></li>
+<li class="chapter" data-level="59" data-path="first-age-suic-attempt-history-no-1.html"><a href="first-age-suic-attempt-history-no-1.html"><i class="fa fa-check"></i><b>59</b> First: AGE + SUIC_ATTEMPT_HISTORY (no):</a></li>
+<li class="chapter" data-level="60" data-path="second-mental-disorder-yes-suic-attempt-history-no.html"><a href="second-mental-disorder-yes-suic-attempt-history-no.html"><i class="fa fa-check"></i><b>60</b> Second: MENTAL DISORDER (yes) + SUIC_ATTEMPT_HISTORY (no):</a></li>
+<li class="chapter" data-level="61" data-path="third-age-mental-disorder-yes.html"><a href="third-age-mental-disorder-yes.html"><i class="fa fa-check"></i><b>61</b> Third: AGE + MENTAL DISORDER (yes):</a></li>
+<li class="chapter" data-level="62" data-path="stepwise-regression-2.html"><a href="stepwise-regression-2.html"><i class="fa fa-check"></i><b>62</b> Stepwise Regression</a></li>
+<li class="chapter" data-level="63" data-path="confidence-interval-of-best-fitted-model-2.html"><a href="confidence-interval-of-best-fitted-model-2.html"><i class="fa fa-check"></i><b>63</b> 95% Confidence interval of best-fitted model:</a></li>
+<li class="chapter" data-level="64" data-path="error-rate-of-best-fitted-model-2.html"><a href="error-rate-of-best-fitted-model-2.html"><i class="fa fa-check"></i><b>64</b> ERROR RATE of best-fitted model:</a></li>
+<li class="chapter" data-level="65" data-path="table-1-2.html"><a href="table-1-2.html"><i class="fa fa-check"></i><b>65</b> TABLE 1:</a></li>
+<li class="chapter" data-level="66" data-path="model-1-initial-model-2.html"><a href="model-1-initial-model-2.html"><i class="fa fa-check"></i><b>66</b> Model 1: INITIAL MODEL:</a></li>
+<li class="chapter" data-level="67" data-path="model-2-eliminates-education.html"><a href="model-2-eliminates-education.html"><i class="fa fa-check"></i><b>67</b> Model 2 eliminates EDUCATION:</a></li>
+<li class="chapter" data-level="68" data-path="model-3-eliminates-province.html"><a href="model-3-eliminates-province.html"><i class="fa fa-check"></i><b>68</b> Model 3 eliminates PROVINCE:</a></li>
+<li class="chapter" data-level="69" data-path="model-4-eliminates-living-with-somebody-1.html"><a href="model-4-eliminates-living-with-somebody-1.html"><i class="fa fa-check"></i><b>69</b> Model 4 eliminates LIVING_WITH_SOMEBODY:</a></li>
+<li class="chapter" data-level="70" data-path="model-5-eliminates-sub-periods.html"><a href="model-5-eliminates-sub-periods.html"><i class="fa fa-check"></i><b>70</b> Model 5 eliminates SUB PERIODS:</a>
+<ul>
+<li class="chapter" data-level="70.1" data-path="model-5-eliminates-sub-periods.html"><a href="model-5-eliminates-sub-periods.html#considering-the-predictors-included-in-the-best-fitted-model-i.e.-stepwith-in-this-group-we-analyzed-the-smallest-possible-linear-model-for-each-specific-mhs-indicator-by-means-of-all-two-predictor-combinations.-2"><i class="fa fa-check"></i><b>70.1</b> Considering the predictors included in the best-fitted model (i.e., stepwith) in this group, we analyzed the smallest possible linear model for each specific MHS indicator by means of all two-predictor combinations.</a></li>
+</ul></li>
+<li class="chapter" data-level="71" data-path="we-performed-all-subsets-regression-using-the-regsubsets-function-from-the-leaps-package-2.html"><a href="we-performed-all-subsets-regression-using-the-regsubsets-function-from-the-leaps-package-2.html"><i class="fa fa-check"></i><b>71</b> We performed all-subsets regression using the regsubsets() function from the leaps package.</a></li>
+<li class="chapter" data-level="72" data-path="we-analyzed-the-three-best-models-for-two-predictor-subset-sizes-2.html"><a href="we-analyzed-the-three-best-models-for-two-predictor-subset-sizes-2.html"><i class="fa fa-check"></i><b>72</b> We analyzed the three best models for two-predictor subset sizes.</a></li>
+<li class="chapter" data-level="73" data-path="first-age-suic-attempt-history-no-2.html"><a href="first-age-suic-attempt-history-no-2.html"><i class="fa fa-check"></i><b>73</b> First: AGE + SUIC_ATTEMPT_HISTORY (no):</a></li>
+<li class="chapter" data-level="74" data-path="second-mental-disorder-yes-suic-attempt-history-no-1.html"><a href="second-mental-disorder-yes-suic-attempt-history-no-1.html"><i class="fa fa-check"></i><b>74</b> Second: MENTAL DISORDER (yes) + SUIC_ATTEMPT_HISTORY (no):</a></li>
+<li class="chapter" data-level="75" data-path="third-sex-woman-suic-attempt-history-no.html"><a href="third-sex-woman-suic-attempt-history-no.html"><i class="fa fa-check"></i><b>75</b> Third: SEX (woman) + SUIC_ATTEMPT_HISTORY (no):</a></li>
+<li class="chapter" data-level="76" data-path="stepwise-regression-3.html"><a href="stepwise-regression-3.html"><i class="fa fa-check"></i><b>76</b> Stepwise Regression</a></li>
+<li class="chapter" data-level="77" data-path="confidence-interval-of-best-fitted-model-3.html"><a href="confidence-interval-of-best-fitted-model-3.html"><i class="fa fa-check"></i><b>77</b> 95% Confidence interval of best-fitted model:</a></li>
+<li class="chapter" data-level="78" data-path="error-rate-of-best-fitted-model-3.html"><a href="error-rate-of-best-fitted-model-3.html"><i class="fa fa-check"></i><b>78</b> ERROR RATE of best-fitted model:</a></li>
+<li class="chapter" data-level="79" data-path="table-1-3.html"><a href="table-1-3.html"><i class="fa fa-check"></i><b>79</b> TABLE 1:</a></li>
+<li class="chapter" data-level="80" data-path="model-1-initial-model-3.html"><a href="model-1-initial-model-3.html"><i class="fa fa-check"></i><b>80</b> Model 1: INITIAL MODEL:</a></li>
+<li class="chapter" data-level="81" data-path="model-2-eliminates-province-2.html"><a href="model-2-eliminates-province-2.html"><i class="fa fa-check"></i><b>81</b> Model 2 eliminates PROVINCE:</a></li>
+<li class="chapter" data-level="82" data-path="model-3-eliminates-education-2.html"><a href="model-3-eliminates-education-2.html"><i class="fa fa-check"></i><b>82</b> Model 3 eliminates EDUCATION:</a></li>
+<li class="chapter" data-level="83" data-path="model-4-eliminates-living-with-somebody-2.html"><a href="model-4-eliminates-living-with-somebody-2.html"><i class="fa fa-check"></i><b>83</b> Model 4 eliminates LIVING_WITH_SOMEBODY:</a></li>
+<li class="chapter" data-level="84" data-path="model-5-eliminates-sub-periods-1.html"><a href="model-5-eliminates-sub-periods-1.html"><i class="fa fa-check"></i><b>84</b> Model 5 eliminates SUB PERIODS:</a>
+<ul>
+<li class="chapter" data-level="84.1" data-path="model-5-eliminates-sub-periods-1.html"><a href="model-5-eliminates-sub-periods-1.html#considering-the-predictors-included-in-the-best-fitted-model-i.e.-stepwith-in-this-group-we-analyzed-the-smallest-possible-linear-model-for-each-specific-mhs-indicator-by-means-of-all-two-predictor-combinations.-3"><i class="fa fa-check"></i><b>84.1</b> Considering the predictors included in the best-fitted model (i.e., stepwith) in this group, we analyzed the smallest possible linear model for each specific MHS indicator by means of all two-predictor combinations.</a></li>
+</ul></li>
+<li class="chapter" data-level="85" data-path="we-performed-all-subsets-regression-using-the-regsubsets-function-from-the-leaps-package-3.html"><a href="we-performed-all-subsets-regression-using-the-regsubsets-function-from-the-leaps-package-3.html"><i class="fa fa-check"></i><b>85</b> We performed all-subsets regression using the regsubsets() function from the leaps package.</a></li>
+<li class="chapter" data-level="86" data-path="we-analyzed-the-three-best-models-for-two-predictor-subset-sizes-3.html"><a href="we-analyzed-the-three-best-models-for-two-predictor-subset-sizes-3.html"><i class="fa fa-check"></i><b>86</b> We analyzed the three best models for two-predictor subset sizes.</a></li>
+<li class="chapter" data-level="87" data-path="first-age-suic-attempt-history-no-3.html"><a href="first-age-suic-attempt-history-no-3.html"><i class="fa fa-check"></i><b>87</b> First: AGE + SUIC_ATTEMPT_HISTORY (no):</a></li>
+<li class="chapter" data-level="88" data-path="second-mental-disorder-yes-suic-attempt-history-no-2.html"><a href="second-mental-disorder-yes-suic-attempt-history-no-2.html"><i class="fa fa-check"></i><b>88</b> Second: MENTAL DISORDER (yes) + SUIC_ATTEMPT_HISTORY (no):</a></li>
+<li class="chapter" data-level="89" data-path="third-economic-income-yes-suic-attempt-history-no.html"><a href="third-economic-income-yes-suic-attempt-history-no.html"><i class="fa fa-check"></i><b>89</b> Third: ECONOMIC_INCOME (yes) + SUIC_ATTEMPT_HISTORY (no):</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">My portfolio</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="we-performed-all-subsets-regression-using-the-regsubsets-function-from-the-leaps-package." class="section level1" number="43">
+<h1><span class="header-section-number">Chapter 43</span> We performed all-subsets regression using the regsubsets() function from the leaps package.</h1>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="model-4-eliminates-living-with-somebody.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="we-analyzed-the-three-best-models-for-two-predictor-subset-sizes-.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Nexttry.pdf", "Nexttry.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

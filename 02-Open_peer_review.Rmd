@@ -1,0 +1,33 @@
+# Open Peer Review
+
+In this assisgment w arw goning to find a scientific article ourself, using PubMed or another database or repository. We'll use only Open Access articles. When we fond a article we will go over the Transparency Criteria.
+
+This is the link to the article I use
+https://www.biorxiv.org/content/10.1101/2020.10.02.322917v2.full
+
+The title of this article is: Leveraging high-throughput screening data and conditional generative adversarial networks to advance predictive toxicology
+The authors of this article are: Adrian J. Green, Martin J. Mohlenkamp, Jhuma Das, et al.
+
+## Peer revieuw part 1
+
+__Study Purpose__ : the summary briefly explains what is more important to conduct this research <br/>
+__Data Availability Statement__: not present <br/>
+__Data Location__: it does describe what the data should look like and there are references to articles that describe how the data was collected. It does not say where you can find the used data. <br/>
+__Study Location__: there is no information about where the study was conducted in the material and method section <br/>
+__Author Review__: the details of the authors are not easy to obtain, the names of the authors are at the top of the article but further contact details are not on the page itself. <br/>
+__Ethics Statement__: the introduction briefly mentions ethics <br/>
+__Funding Statement__: nothing is said about funding <br/>
+__Code Availability__: no code is shared in the article <br/>
+
+## Open peer review part 2
+Next we are going to try to find a article with R code. We do this on the OSF website.
+We are going to try to get the code working in our r studio. 
+
+This is the link to the code we will use
+https://osf.io/gkcn7/
+
+To make this code work we only have to change the way to load the data, out commend the effect sizes and we have to change the column names so the names are not separated by points. 
+
+You can find the working script in the appendix, chapther 11
+
+It took little effort to get this script working. On a scale of 0 to 5 I would give it a 4
