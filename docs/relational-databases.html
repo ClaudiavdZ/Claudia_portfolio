@@ -5,26 +5,26 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 Relational databases | My portfolio</title>
-  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="description" content="This is my portfolio." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 Relational databases | My portfolio" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta property="og:description" content="This is my portfolio." />
   
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 7 Relational databases | My portfolio" />
   
-  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="twitter:description" content="This is my portfolio." />
   
 
 <meta name="author" content="Claudia van der Zijden" />
 
 
-<meta name="date" content="2021-06-20" />
+<meta name="date" content="2021-06-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
   
 <link rel="prev" href="mendaly.html"/>
 <link rel="next" href="my-own-package.html"/>
-<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -178,6 +178,9 @@ div.csl-indent {
 <li class="chapter" data-level="8" data-path="my-own-package.html"><a href="my-own-package.html"><i class="fa fa-check"></i><b>8</b> My own package</a></li>
 <li class="chapter" data-level="9" data-path="parameters.html"><a href="parameters.html"><i class="fa fa-check"></i><b>9</b> Parameters</a></li>
 <li class="chapter" data-level="10" data-path="looking-ahead.html"><a href="looking-ahead.html"><i class="fa fa-check"></i><b>10</b> Looking ahead</a></li>
+<li class="chapter" data-level="11" data-path="machine-learning.html"><a href="machine-learning.html"><i class="fa fa-check"></i><b>11</b> Machine learning</a></li>
+<li class="chapter" data-level="12" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><b>12</b> Appendix</a></li>
+<li class="chapter" data-level="13" data-path="refrences.html"><a href="refrences.html"><i class="fa fa-check"></i><b>13</b> Refrences</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -200,157 +203,176 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="relational-databases" class="section level1" number="7">
 <h1><span class="header-section-number">Chapter 7</span> Relational databases</h1>
-<p>TIPS</p>
-<p>Be aware, the flu and dengue data contains metadata that should be stripped from the data on load.
-Think of a way to create valid country names that fit with the gapminder data.
-Remember (!) that in the end, this assignment needs to be reported by a .Rmd file for your portfolio. So save what you are doing, save your SQL scripts, make screenshots if you want, and in general design a clear and attractive report in RMarkdown to showcase your SQL/database-skills in your portfolio. You may be sending this to propspective employers in the future! (also, the portfolio is what we as teachers will be grading. But definitely think about the future rather than only about “passing the course”)
-Assignment</p>
-<p>Load the flu (“./data/flu_data.csv), the dengue (.”/data/dengue_data.csv) and the gapminder ({dslabs} package) into three separate dataframes in R</p>
-<p>Check if they are in the right shape. Is the data in the ‘tidy’ format? If not change the format to ‘tidy’</p>
-<p>Change the country and date variables of the three tables so that they coincide in terms of data type, class and values</p>
-<p>Store the three tables as separate (so six in total) .csv and .rds files.</p>
-<p>In Dbeaver create a new PostgreSQL database “workflowsdb”</p>
-<p>Using RPostgreSQL, insert the tables into the database.</p>
-<p>Inspect the contents of the tables with SQL (in DBeaver) and save the SQL script.</p>
-<p>Inspect the contents of the tables with dplyr (in R) and save a RMarkdown showing what you are doing.</p>
-<p>Load the gapminder data in R and change the dataframe in such as way that you could join it to dengue and flue.</p>
-<p>Save this clean gapminder data in the “workflowsdb” database</p>
-<p>Perform some joins (your choice) with SQL (can be done in DBeaver or with dplyr.</p>
-<p>Generate a joined table, and export this from the database to R.</p>
-<p>Show some descriptive statistics with this table, and at least 3 visualisations using ggplot2.</p>
-<p>show all of your actions in this assignment in a Rmd file, perhaps with pictures and provide text explaining and showcasing your skills.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="relational-databases.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb22-2"><a href="relational-databases.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span></code></pre></div>
+<p>In this chapter we are going to get acquainted with sql and dbever. to start, we first load 3 different datasets into Rstudio, namely the flu, dengue and gapminder dataset. And we will make them tidy.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="relational-databases.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb23-2"><a href="relational-databases.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;dslabs&#39;</code></pre>
 <pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
 ## 
 ##     gapminder</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="relational-databases.html#cb25-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(gapminder)</span>
-<span id="cb25-2"><a href="relational-databases.html#cb25-2" aria-hidden="true" tabindex="-1"></a>flu_data<span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">url</span>(<span class="st">&quot;https://raw.githubusercontent.com/ClaudiavdZ/tlsc-dsfb26v-20_workflows/main/data/flu_data.csv&quot;</span>), <span class="at">skip =</span> <span class="dv">11</span>)</span>
-<span id="cb25-3"><a href="relational-databases.html#cb25-3" aria-hidden="true" tabindex="-1"></a>flu_data <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(flu_data)</span>
-<span id="cb25-4"><a href="relational-databases.html#cb25-4" aria-hidden="true" tabindex="-1"></a>dengue_data<span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">url</span>(<span class="st">&quot;https://raw.githubusercontent.com/ClaudiavdZ/tlsc-dsfb26v-20_workflows/main/data/dengue_data.csv&quot;</span>), <span class="at">skip =</span> <span class="dv">11</span>)</span>
-<span id="cb25-5"><a href="relational-databases.html#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-6"><a href="relational-databases.html#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(dengue_data , <span class="at">file =</span> <span class="st">&quot;dengu_data.csv&quot;</span>)</span>
-<span id="cb25-7"><a href="relational-databases.html#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(dengue_data , <span class="at">file =</span> <span class="st">&quot;dengu_data.RDS&quot;</span>)</span>
-<span id="cb25-8"><a href="relational-databases.html#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(flu_data , <span class="at">file =</span> <span class="st">&quot;flu_data.csv&quot;</span>)</span>
-<span id="cb25-9"><a href="relational-databases.html#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(flu_data , <span class="at">file =</span> <span class="st">&quot;flu_data.RDS&quot;</span>)</span>
-<span id="cb25-10"><a href="relational-databases.html#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(gapminder , <span class="at">file =</span> <span class="st">&quot;gapminder.csv&quot;</span>)</span>
-<span id="cb25-11"><a href="relational-databases.html#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(gapminder , <span class="at">file =</span> <span class="st">&quot;gapminder.RDS&quot;</span>)</span>
-<span id="cb25-12"><a href="relational-databases.html#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-13"><a href="relational-databases.html#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
-<span id="cb25-14"><a href="relational-databases.html#cb25-14" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RPostgres<span class="sc">::</span><span class="fu">Postgres</span>(), </span>
-<span id="cb25-15"><a href="relational-databases.html#cb25-15" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dbname =</span> <span class="st">&quot;myfirstdb&quot;</span>, </span>
-<span id="cb25-16"><a href="relational-databases.html#cb25-16" aria-hidden="true" tabindex="-1"></a>                 <span class="at">host=</span><span class="st">&quot;localhost&quot;</span>, </span>
-<span id="cb25-17"><a href="relational-databases.html#cb25-17" aria-hidden="true" tabindex="-1"></a>                 <span class="at">port=</span><span class="st">&quot;5432&quot;</span>, </span>
-<span id="cb25-18"><a href="relational-databases.html#cb25-18" aria-hidden="true" tabindex="-1"></a>                 <span class="at">user=</span><span class="st">&quot;postgres&quot;</span>, </span>
-<span id="cb25-19"><a href="relational-databases.html#cb25-19" aria-hidden="true" tabindex="-1"></a>                 <span class="at">password=</span><span class="st">&quot;Veroni36&quot;</span>) </span>
-<span id="cb25-20"><a href="relational-databases.html#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListTables</span>(con) </span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="relational-databases.html#cb26-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(gapminder)</span>
+<span id="cb26-2"><a href="relational-databases.html#cb26-2" aria-hidden="true" tabindex="-1"></a>flu_data<span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">url</span>(<span class="st">&quot;https://raw.githubusercontent.com/ClaudiavdZ/tlsc-dsfb26v-20_workflows/main/data/flu_data.csv&quot;</span>), <span class="at">skip =</span> <span class="dv">11</span>)</span>
+<span id="cb26-3"><a href="relational-databases.html#cb26-3" aria-hidden="true" tabindex="-1"></a>flu_data <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(flu_data)</span>
+<span id="cb26-4"><a href="relational-databases.html#cb26-4" aria-hidden="true" tabindex="-1"></a>dengue_data<span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">url</span>(<span class="st">&quot;https://raw.githubusercontent.com/ClaudiavdZ/tlsc-dsfb26v-20_workflows/main/data/dengue_data.csv&quot;</span>), <span class="at">skip =</span> <span class="dv">11</span>)</span></code></pre></div>
+<p>Next we will store them as a csv and RDS file</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="relational-databases.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(dengue_data , <span class="at">file =</span> <span class="st">&quot;dengu_data.csv&quot;</span>)</span>
+<span id="cb27-2"><a href="relational-databases.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(dengue_data , <span class="at">file =</span> <span class="st">&quot;dengu_data.RDS&quot;</span>)</span>
+<span id="cb27-3"><a href="relational-databases.html#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(flu_data , <span class="at">file =</span> <span class="st">&quot;flu_data.csv&quot;</span>)</span>
+<span id="cb27-4"><a href="relational-databases.html#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(flu_data , <span class="at">file =</span> <span class="st">&quot;flu_data.RDS&quot;</span>)</span>
+<span id="cb27-5"><a href="relational-databases.html#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(gapminder , <span class="at">file =</span> <span class="st">&quot;gapminder.csv&quot;</span>)</span>
+<span id="cb27-6"><a href="relational-databases.html#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(gapminder , <span class="at">file =</span> <span class="st">&quot;gapminder.RDS&quot;</span>)</span></code></pre></div>
+<p>Then we are goning to watch te data in Dbever</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="relational-databases.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb28-2"><a href="relational-databases.html#cb28-2" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RPostgres<span class="sc">::</span><span class="fu">Postgres</span>(), </span>
+<span id="cb28-3"><a href="relational-databases.html#cb28-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dbname =</span> <span class="st">&quot;myfirstdb&quot;</span>, </span>
+<span id="cb28-4"><a href="relational-databases.html#cb28-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">host=</span><span class="st">&quot;localhost&quot;</span>, </span>
+<span id="cb28-5"><a href="relational-databases.html#cb28-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">port=</span><span class="st">&quot;5432&quot;</span>, </span>
+<span id="cb28-6"><a href="relational-databases.html#cb28-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">user=</span><span class="st">&quot;postgres&quot;</span>, </span>
+<span id="cb28-7"><a href="relational-databases.html#cb28-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">password=</span><span class="st">&quot;Veroni36&quot;</span>) </span>
+<span id="cb28-8"><a href="relational-databases.html#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListTables</span>(con) </span></code></pre></div>
 <pre><code>## [1] &quot;test&quot;        &quot;gapminder&quot;   &quot;flu_data&quot;    &quot;dengue_data&quot;</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="relational-databases.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dbWriteTable(con, &quot;dengue_data&quot;, dengue_data)</span></span>
-<span id="cb27-2"><a href="relational-databases.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#dbWriteTable(con, &quot;flu_data&quot;, flu_data)</span></span>
-<span id="cb27-3"><a href="relational-databases.html#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#dbWriteTable(con, &quot;gapminder&quot;, gapminder)</span></span>
-<span id="cb27-4"><a href="relational-databases.html#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="relational-databases.html#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># library(janitor)</span></span>
-<span id="cb27-6"><a href="relational-databases.html#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># gapminder_usd &lt;- as.data.frame(t(gapminder))</span></span>
-<span id="cb27-7"><a href="relational-databases.html#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co"># gapminder_usd &lt;- gapminder_usd %&gt;% row_to_names(row_number = 1)</span></span>
-<span id="cb27-8"><a href="relational-databases.html#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-9"><a href="relational-databases.html#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-10"><a href="relational-databases.html#cb27-10" aria-hidden="true" tabindex="-1"></a>flu_usd <span class="ot">&lt;-</span> <span class="fu">gather</span>(</span>
-<span id="cb27-11"><a href="relational-databases.html#cb27-11" aria-hidden="true" tabindex="-1"></a>  flu_data,</span>
-<span id="cb27-12"><a href="relational-databases.html#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">key =</span> <span class="st">&quot;country&quot;</span>,</span>
-<span id="cb27-13"><a href="relational-databases.html#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="st">&quot;flu&quot;</span>,</span>
-<span id="cb27-14"><a href="relational-databases.html#cb27-14" aria-hidden="true" tabindex="-1"></a>  Argentina<span class="sc">:</span>Uruguay</span>
-<span id="cb27-15"><a href="relational-databases.html#cb27-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb27-16"><a href="relational-databases.html#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="co">#seperate year from month and day</span></span>
-<span id="cb27-17"><a href="relational-databases.html#cb27-17" aria-hidden="true" tabindex="-1"></a>flu_usd <span class="ot">&lt;-</span> <span class="fu">separate</span>(flu_usd, Date, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;month&quot;</span>, <span class="st">&quot;day&quot;</span>),  <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span>
-<span id="cb27-18"><a href="relational-databases.html#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="co">#count sum of flu</span></span>
-<span id="cb27-19"><a href="relational-databases.html#cb27-19" aria-hidden="true" tabindex="-1"></a>flu_usd <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(flu_usd<span class="sc">$</span>flu, <span class="at">by=</span><span class="fu">list</span>(<span class="at">year=</span>flu_usd<span class="sc">$</span>year, <span class="at">country=</span>flu_usd<span class="sc">$</span>country), <span class="at">FUN=</span>sum)</span>
-<span id="cb27-20"><a href="relational-databases.html#cb27-20" aria-hidden="true" tabindex="-1"></a>flu_usd <span class="ot">&lt;-</span> flu_usd <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">flu =</span> x)</span>
-<span id="cb27-21"><a href="relational-databases.html#cb27-21" aria-hidden="true" tabindex="-1"></a>flu_usd<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(flu_usd<span class="sc">$</span>year)  </span>
-<span id="cb27-22"><a href="relational-databases.html#cb27-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-23"><a href="relational-databases.html#cb27-23" aria-hidden="true" tabindex="-1"></a>dengue_usd <span class="ot">&lt;-</span> <span class="fu">gather</span>(</span>
-<span id="cb27-24"><a href="relational-databases.html#cb27-24" aria-hidden="true" tabindex="-1"></a>  dengue_data,</span>
-<span id="cb27-25"><a href="relational-databases.html#cb27-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">key =</span> <span class="st">&quot;country&quot;</span>,</span>
-<span id="cb27-26"><a href="relational-databases.html#cb27-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="st">&quot;dengue&quot;</span>,</span>
-<span id="cb27-27"><a href="relational-databases.html#cb27-27" aria-hidden="true" tabindex="-1"></a>  Argentina<span class="sc">:</span>Venezuela</span>
-<span id="cb27-28"><a href="relational-databases.html#cb27-28" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb27-29"><a href="relational-databases.html#cb27-29" aria-hidden="true" tabindex="-1"></a>dengue_usd <span class="ot">&lt;-</span> <span class="fu">separate</span>(dengue_usd, Date, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;month&quot;</span>, <span class="st">&quot;day&quot;</span>),  <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span>
-<span id="cb27-30"><a href="relational-databases.html#cb27-30" aria-hidden="true" tabindex="-1"></a>dengue_usd <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(dengue_usd<span class="sc">$</span>dengue, <span class="at">by=</span><span class="fu">list</span>(<span class="at">year=</span>dengue_usd<span class="sc">$</span>year, <span class="at">country=</span>dengue_usd<span class="sc">$</span>country), <span class="at">FUN=</span>sum)</span>
-<span id="cb27-31"><a href="relational-databases.html#cb27-31" aria-hidden="true" tabindex="-1"></a>dengue_usd <span class="ot">&lt;-</span> dengue_usd <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">dengue =</span> x)</span>
-<span id="cb27-32"><a href="relational-databases.html#cb27-32" aria-hidden="true" tabindex="-1"></a>dengue_usd<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(dengue_usd<span class="sc">$</span>year)</span>
-<span id="cb27-33"><a href="relational-databases.html#cb27-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-34"><a href="relational-databases.html#cb27-34" aria-hidden="true" tabindex="-1"></a>alltogether <span class="ot">&lt;-</span> <span class="fu">left_join</span>(flu_usd, gapminder, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;country&quot;</span>, <span class="st">&quot;year&quot;</span>))</span>
-<span id="cb27-35"><a href="relational-databases.html#cb27-35" aria-hidden="true" tabindex="-1"></a>alltogether <span class="ot">&lt;-</span> <span class="fu">left_join</span>(alltogether, dengue_usd , <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;country&quot;</span>, <span class="st">&quot;year&quot;</span>))</span>
-<span id="cb27-36"><a href="relational-databases.html#cb27-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-37"><a href="relational-databases.html#cb27-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-38"><a href="relational-databases.html#cb27-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-39"><a href="relational-databases.html#cb27-39" aria-hidden="true" tabindex="-1"></a><span class="co">#infant_mortelity firtelety life expantie door flu and dengue in verschillende jaren in verschillende landen</span></span>
-<span id="cb27-40"><a href="relational-databases.html#cb27-40" aria-hidden="true" tabindex="-1"></a><span class="co">#en beetje statestiek</span></span>
-<span id="cb27-41"><a href="relational-databases.html#cb27-41" aria-hidden="true" tabindex="-1"></a>flu_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(dataframe, land){</span>
-<span id="cb27-42"><a href="relational-databases.html#cb27-42" aria-hidden="true" tabindex="-1"></a>  dataframe <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country <span class="sc">==</span> land) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-43"><a href="relational-databases.html#cb27-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> flu)) <span class="sc">+</span></span>
-<span id="cb27-44"><a href="relational-databases.html#cb27-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb27-45"><a href="relational-databases.html#cb27-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span>
-<span id="cb27-46"><a href="relational-databases.html#cb27-46" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb27-47"><a href="relational-databases.html#cb27-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-48"><a href="relational-databases.html#cb27-48" aria-hidden="true" tabindex="-1"></a><span class="fu">flu_plot</span>(alltogether,<span class="st">&quot;Netherlands&quot;</span>)</span></code></pre></div>
+<p>Here you can see what that looks like</p>
+<div class="figure">
+<img src="data/sql/dbever.jpg" style="width:80.0%" alt="" />
+<p class="caption">Dbever</p>
+</div>
+<p>Then we will try to put the datasets together as one dataset.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="relational-databases.html#cb30-1" aria-hidden="true" tabindex="-1"></a>flu_usd <span class="ot">&lt;-</span> <span class="fu">gather</span>(</span>
+<span id="cb30-2"><a href="relational-databases.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  flu_data,</span>
+<span id="cb30-3"><a href="relational-databases.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">key =</span> <span class="st">&quot;country&quot;</span>,</span>
+<span id="cb30-4"><a href="relational-databases.html#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="st">&quot;flu&quot;</span>,</span>
+<span id="cb30-5"><a href="relational-databases.html#cb30-5" aria-hidden="true" tabindex="-1"></a>  Argentina<span class="sc">:</span>Uruguay</span>
+<span id="cb30-6"><a href="relational-databases.html#cb30-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-7"><a href="relational-databases.html#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">#seperate year from month and day</span></span>
+<span id="cb30-8"><a href="relational-databases.html#cb30-8" aria-hidden="true" tabindex="-1"></a>flu_usd <span class="ot">&lt;-</span> <span class="fu">separate</span>(flu_usd, Date, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;month&quot;</span>, <span class="st">&quot;day&quot;</span>),  <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span>
+<span id="cb30-9"><a href="relational-databases.html#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co">#count sum of flu</span></span>
+<span id="cb30-10"><a href="relational-databases.html#cb30-10" aria-hidden="true" tabindex="-1"></a>flu_usd <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(flu_usd<span class="sc">$</span>flu, <span class="at">by=</span><span class="fu">list</span>(<span class="at">year=</span>flu_usd<span class="sc">$</span>year, <span class="at">country=</span>flu_usd<span class="sc">$</span>country), <span class="at">FUN=</span>sum)</span>
+<span id="cb30-11"><a href="relational-databases.html#cb30-11" aria-hidden="true" tabindex="-1"></a>flu_usd <span class="ot">&lt;-</span> flu_usd <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">flu =</span> x)</span>
+<span id="cb30-12"><a href="relational-databases.html#cb30-12" aria-hidden="true" tabindex="-1"></a>flu_usd<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(flu_usd<span class="sc">$</span>year)  </span>
+<span id="cb30-13"><a href="relational-databases.html#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-14"><a href="relational-databases.html#cb30-14" aria-hidden="true" tabindex="-1"></a>dengue_usd <span class="ot">&lt;-</span> <span class="fu">gather</span>(</span>
+<span id="cb30-15"><a href="relational-databases.html#cb30-15" aria-hidden="true" tabindex="-1"></a>  dengue_data,</span>
+<span id="cb30-16"><a href="relational-databases.html#cb30-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">key =</span> <span class="st">&quot;country&quot;</span>,</span>
+<span id="cb30-17"><a href="relational-databases.html#cb30-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="st">&quot;dengue&quot;</span>,</span>
+<span id="cb30-18"><a href="relational-databases.html#cb30-18" aria-hidden="true" tabindex="-1"></a>  Argentina<span class="sc">:</span>Venezuela</span>
+<span id="cb30-19"><a href="relational-databases.html#cb30-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-20"><a href="relational-databases.html#cb30-20" aria-hidden="true" tabindex="-1"></a>dengue_usd <span class="ot">&lt;-</span> <span class="fu">separate</span>(dengue_usd, Date, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;month&quot;</span>, <span class="st">&quot;day&quot;</span>),  <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>)</span>
+<span id="cb30-21"><a href="relational-databases.html#cb30-21" aria-hidden="true" tabindex="-1"></a>dengue_usd <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(dengue_usd<span class="sc">$</span>dengue, <span class="at">by=</span><span class="fu">list</span>(<span class="at">year=</span>dengue_usd<span class="sc">$</span>year, <span class="at">country=</span>dengue_usd<span class="sc">$</span>country), <span class="at">FUN=</span>sum)</span>
+<span id="cb30-22"><a href="relational-databases.html#cb30-22" aria-hidden="true" tabindex="-1"></a>dengue_usd <span class="ot">&lt;-</span> dengue_usd <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">dengue =</span> x)</span>
+<span id="cb30-23"><a href="relational-databases.html#cb30-23" aria-hidden="true" tabindex="-1"></a>dengue_usd<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(dengue_usd<span class="sc">$</span>year)</span>
+<span id="cb30-24"><a href="relational-databases.html#cb30-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-25"><a href="relational-databases.html#cb30-25" aria-hidden="true" tabindex="-1"></a>alltogether <span class="ot">&lt;-</span> <span class="fu">left_join</span>(flu_usd, gapminder, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;country&quot;</span>, <span class="st">&quot;year&quot;</span>))</span>
+<span id="cb30-26"><a href="relational-databases.html#cb30-26" aria-hidden="true" tabindex="-1"></a>alltogether <span class="ot">&lt;-</span> <span class="fu">left_join</span>(alltogether, dengue_usd , <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;country&quot;</span>, <span class="st">&quot;year&quot;</span>))</span></code></pre></div>
+<p>After thad we make some visualisations of the data</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="relational-databases.html#cb31-1" aria-hidden="true" tabindex="-1"></a>flu_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(dataframe, land){</span>
+<span id="cb31-2"><a href="relational-databases.html#cb31-2" aria-hidden="true" tabindex="-1"></a>  dataframe <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country <span class="sc">==</span> land) <span class="sc">%&gt;%</span> </span>
+<span id="cb31-3"><a href="relational-databases.html#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> flu)) <span class="sc">+</span></span>
+<span id="cb31-4"><a href="relational-databases.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb31-5"><a href="relational-databases.html#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span>
+<span id="cb31-6"><a href="relational-databases.html#cb31-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb31-7"><a href="relational-databases.html#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="relational-databases.html#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="fu">flu_plot</span>(alltogether,<span class="st">&quot;Netherlands&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: Removed 2 row(s) containing missing values (geom_path).</code></pre>
 <pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
-<p><img src="Nexttry_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="relational-databases.html#cb30-1" aria-hidden="true" tabindex="-1"></a>alltogether <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">&quot;Argentina&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-2"><a href="relational-databases.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb30-3"><a href="relational-databases.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> dengue,<span class="at">x=</span>year, <span class="at">colour =</span> <span class="st">&quot;green&quot;</span>),) <span class="sc">+</span> </span>
-<span id="cb30-4"><a href="relational-databases.html#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> flu,<span class="at">x=</span>year, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>))</span></code></pre></div>
+<p><img src="Nexttry_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="relational-databases.html#cb34-1" aria-hidden="true" tabindex="-1"></a>alltogether <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">&quot;Argentina&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="relational-databases.html#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb34-3"><a href="relational-databases.html#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> dengue,<span class="at">x=</span>year, <span class="at">colour =</span> <span class="st">&quot;green&quot;</span>),) <span class="sc">+</span> </span>
+<span id="cb34-4"><a href="relational-databases.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> flu,<span class="at">x=</span>year, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>))</span></code></pre></div>
 <pre><code>## Warning: Removed 2 row(s) containing missing values (geom_path).</code></pre>
 <pre><code>## Warning: Removed 2 row(s) containing missing values (geom_path).</code></pre>
-<p><img src="Nexttry_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="relational-databases.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> alltogether, <span class="fu">aes</span>(<span class="at">x =</span> continent, <span class="at">y =</span> flu)) <span class="sc">+</span></span>
-<span id="cb33-2"><a href="relational-databases.html#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill =</span> continent))</span></code></pre></div>
+<p><img src="Nexttry_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="relational-databases.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> alltogether, <span class="fu">aes</span>(<span class="at">x =</span> continent, <span class="at">y =</span> flu)) <span class="sc">+</span></span>
+<span id="cb37-2"><a href="relational-databases.html#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">fill =</span> continent))</span></code></pre></div>
 <pre><code>## Warning: Removed 72 rows containing non-finite values (stat_boxplot).</code></pre>
-<p><img src="Nexttry_files/figure-html/unnamed-chunk-1-3.png" width="672" /></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="relational-databases.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>fertility)</span></code></pre></div>
+<p><img src="Nexttry_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="relational-databases.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>fertility)</span></code></pre></div>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  alltogether$fertility
 ## W = 0.84528, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="relational-databases.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>flu)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="relational-databases.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>flu)</span></code></pre></div>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  alltogether$flu
 ## W = 0.70363, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="relational-databases.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>dengue)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="relational-databases.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>dengue)</span></code></pre></div>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  alltogether$dengue
 ## W = 0.91218, p-value = 0.0009743</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="relational-databases.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>infant_mortality)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="relational-databases.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>infant_mortality)</span></code></pre></div>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  alltogether$infant_mortality
 ## W = 0.75988, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="relational-databases.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>life_expectancy)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="relational-databases.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>life_expectancy)</span></code></pre></div>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  alltogether$life_expectancy
 ## W = 0.93264, p-value = 9.214e-12</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="relational-databases.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>gdp)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="relational-databases.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>gdp)</span></code></pre></div>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  alltogether$gdp
 ## W = 0.53327, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="relational-databases.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>population)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="relational-databases.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>population)</span></code></pre></div>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  alltogether$population
 ## W = 0.74646, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="relational-databases.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code></pre></div>
+<pre><code>## Loading required package: carData</code></pre>
+<pre><code>## 
+## Attaching package: &#39;car&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     recode</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     some</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="relational-databases.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(alltogether<span class="sc">$</span>fertility, alltogether<span class="sc">$</span>flu, <span class="at">center =</span> mean)</span></code></pre></div>
+<pre><code>## Warning in leveneTest.default(alltogether$fertility, alltogether$flu, center =
+## mean): alltogether$flu coerced to factor.</code></pre>
+<pre><code>## Warning in anova.lm(lm(resp ~ group)): ANOVA F-tests on an essentially perfect
+## fit are unreliable</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = mean)
+##        Df    F value    Pr(&gt;F)    
+## group 301 1.6735e+26 6.163e-14 ***
+##         1                         
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="relational-databases.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#no equal variance</span></span>
+<span id="cb62-2"><a href="relational-databases.html#cb62-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="relational-databases.html#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(alltogether<span class="sc">$</span>dengue, alltogether<span class="sc">$</span>infant_mortality, <span class="at">center =</span> mean)</span></code></pre></div>
+<pre><code>## Warning in leveneTest.default(alltogether$dengue,
+## alltogether$infant_mortality, : alltogether$infant_mortality coerced to factor.</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = mean)
+##       Df F value    Pr(&gt;F)    
+## group 44  19.715 0.0002092 ***
+##        7                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="relational-databases.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co">#no equal variance</span></span>
+<span id="cb65-2"><a href="relational-databases.html#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="relational-databases.html#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(alltogether<span class="sc">$</span>population, alltogether<span class="sc">$</span>life_expectancy, <span class="at">center =</span> mean)</span></code></pre></div>
+<pre><code>## Warning in leveneTest.default(alltogether$population,
+## alltogether$life_expectancy, : alltogether$life_expectancy coerced to factor.</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = mean)
+##        Df F value    Pr(&gt;F)    
+## group 137  3.0645 4.125e-14 ***
+##       226                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="relational-databases.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#no equal variance</span></span></code></pre></div>
 
 </div>
             </section>

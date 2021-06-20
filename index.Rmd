@@ -7,7 +7,9 @@ documentclass: book
 bibliography: [book.bib, packages.bib, referenties.bib]
 biblio-style: apalike
 link-citations: yes
-description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
+description: "This is my portfolio."
+params: 
+  data:https://opendata.ecdc.europa.eu/covid19/nationalcasedeath_eueea_daily_ei/xlsx/data.xlsx
 ---
 
 # Introduction

@@ -1,1 +1,19 @@
+--- 
+params: 
+  data:https://opendata.ecdc.europa.eu/covid19/nationalcasedeath_eueea_daily_ei/xlsx/data.xlsx
+---
 # Parameters
+
+```{r}
+data <- read.csv("data/parameter/data.csv")
+library(tidyverse)
+ggplot(data, aes(x = month, y = deaths))+
+  geom_line(aes(colour = countriesAndTerritories))
+
+
+ggplot(data, aes(x = month, y = cases))+
+  geom_line(aes(colour = countriesAndTerritories))
+
+
+```
+

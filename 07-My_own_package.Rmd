@@ -1,1 +1,13 @@
 # My own package
+
+I also made my own package, my package contains funtions i used for this project.
+The package is called bestpackage.
+It has a script to find attributes in dataset, in the biomart database given a search string.
+A script to make a line graph of flu data
+A script to make a model
+And a script to normalise data
+
+You can find more in formation about the package on its github:
+https://github.com/ClaudiavdZ/bestpackage
+
+

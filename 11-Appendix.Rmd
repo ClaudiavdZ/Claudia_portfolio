@@ -1,0 +1,597 @@
+# Appendix
+
+__This code belongs to chapter 3__
+I dont let this script run because then I get a error because of the plots are to large
+
+R code for:
+ L?pez Steinmetz L.C., Dutto Florio M.A., Leyes C.A., Fong S.B., Rigalli A. & Godoy J.C. 
+Levels and predictors of depression, anxiety, and suicidal risk during COVID-19 pandemic in Argentina: The impacts of quarantine extensions on mental health state. 
+```{r, eval=FALSE}
+
+library(tidyverse)
+library(readxl)                            
+# Load the dataset:
+table<-read_excel("data/Peer/dataset.xlsx")
+summary(table)
+
+###### SUB-TITLE: METHODS > Sample and procedure
+# SAMPLE N = 1100
+
+# Distribution by sex:
+table(table$SEX)
+# Absolute frequencies: Men = 217, Women = 883
+prop.table(table(table$SEX))*100
+# Percentages: Men = 19.72727%, Women = 80.27273%
+
+# Central tendency measures by age (entire sample)
+# Mean
+mean(table$AGE)
+# Age: mean = 31.45273
+
+# Standard deviation (sd)
+sd(table$AGE)
+# Age: sd = 11.7824
+
+# Standard error (sem)
+library("plotrix")
+std.error(table$AGE)
+# Age: sem = 0.3552526
+
+# median
+median(table$AGE)
+# Age: median = 28
+
+
+###### SUB-TITLE: METHODS > Data analysis
+
+# To test Skewness and Kurtosis # Criteria: range of acceptable values or near to -3 and +3 (Brown, 2006).
+# Reference: Brown, T. A. (2006). Confirmatory factor analysis for applied research. New York: Guilford Press.
+
+library(moments)
+
+# DEPRESSION
+skewness(table$DEPRESSION) 
+# skewness DEPRESSION = 1.014193
+kurtosis(table$DEPRESSION)
+# kurtosis DEPRESSION = 3.789272
+
+table <- rename(table,  "ANXIETY_STATE" = "ANXIETY STATE",
+                "ANXIETY_TRAIT" = "ANXIETY TRAIT",
+                "SUIC_RISK" = "SUIC RISK",
+                "SUB_PERIODS" = "SUB PERIODS",
+                "MENTAL_DISORDER_HISTORY" = "MENTAL DISORDER HISTORY",
+                "SUIC_ATTEMPT_HISTORY" = "SUIC ATTEMPT HISTORY",
+                "LIVING_WITH_SOMEBODY" = "LIVING WITH SOMEBODY",
+                "ECONOMIC_INCOME" = "ECONOMIC INCOME")
+# ANXIETY STATE
+skewness(table$ANXIETY_STATE) 
+# skewness ANXIETY STATE = 0.2010007
+kurtosis(table$ANXIETY_STATE)
+# kurtosis ANXIETY STATE = 2.341017
+
+# ANXIETY TRAIT
+skewness(table$ANXIETY_TRAIT) 
+# skewness ANXIETY TRAIT = 0.2401163
+kurtosis(table$ANXIETY_TRAIT)
+# kurtosis ANXIETY TRAIT = 2.354038
+
+# SUICIDAL RISK
+skewness(table$SUIC_RISK) 
+# skewness SUICIDAL RISK = 0.8331517
+kurtosis(table$SUIC_RISK)
+# kurtosis SUICIDAL RISK = 3.193105
+
+
+
+# For addresing the first aim, we divided the entire sample into three groups: 
+table(table$SUB_PERIODS)
+# first quarantine extension (1. EXT POST) = 362
+# second and third quarantine extensions (2. EXT POST) = 239
+# fourth quarantine extension (3. EXT POST) = 499
+
+
+
+###########################################################################################
+######################################### RESULTS #########################################
+###########################################################################################
+
+###########################################################################################
+######################################### AIM 1 ###########################################
+
+# Load this library for computing effect sizes:
+library(sjstats)
+
+#############################################################################################
+### Differences in specific mental health state indicators by three sub-periods of quarantine
+
+# 1. EXT POST = first quarantine extension
+# 2./3. EXT POST = second/third quarantine extensions
+# 4. EXT POST = fourth quarantine extension
+
+# DEPRESSION
+anovatempdepr <- aov(table$DEPRESSION~table$SUB_PERIODS)
+anovatempdepr
+summary(anovatempdepr)
+plot(anovatempdepr)
+pairwise.t.test(x = table$DEPRESSION, g = table$SUB_PERIODS, p.adjust.method = "bonferroni", pool.sd = TRUE, paired = FALSE, alternative = "two.sided")
+
+# significant differences
+# 2./3. EXT POST-1. EXT POST p adj 0.018
+# 4. EXT POST-1. EXT POST p adj 1.3e-05
+#effectsize::cohens_f(anovatempdepr, ci = 0.95, partial = TRUE, type = 1)
+
+tapply(table$DEPRESSION,factor(table$SUB_PERIODS),mean)
+tapply(table$DEPRESSION,factor(table$SUB_PERIODS),std.error)
+
+
+library(gplots)
+# Figure S1 (Supplementary material)
+plotmeans(table$DEPRESSION~table$SUB_PERIODS, main="Fig. S1. Depression by quarantine sub-periods. Mean plot with 95% Confidence Interval", cex.main = 0.8, ylab = "Depression", xlab = "Quarantine's sub periods")
+
+mean(table$DEPRESSION) # mean = 15.69545
+std.error(table$DEPRESSION) # std. error = 0.3347087
+# Percentage distribution by cutoff score:
+# non clinically depressed:
+prop.table(table(table$DEPRESSION<20,table$SUB_PERIODS))*100
+# clinically depressed:
+prop.table(table(table$DEPRESSION>=20,table$SUB_PERIODS))*100
+
+
+
+# ANXIETY STATE
+anovatempanxstate <- aov(table$ANXIETY_STATE~table$SUB_PERIODS)
+anovatempanxstate
+summary(anovatempanxstate)
+plot(anovatempanxstate)
+pairwise.t.test(x = table$ANXIETY_STATE, g = table$SUB_PERIODS, p.adjust.method = "bonferroni", pool.sd = TRUE, paired = FALSE, alternative = "two.sided")
+# significant differences
+# 2./3. EXT POST-1. EXT POST p adj 0.0057
+# 4. EXT POST-1. EXT POST p adj 0.0038
+#effectsize::cohens_f(anovatempanxstate, ci = 0.95, partial = TRUE, type = 1)
+
+tapply(table$ANXIETY_STATE,factor(table$SUB_PERIODS),mean)
+tapply(table$ANXIETY_STATE,factor(table$SUB_PERIODS),std.error)
+
+
+# Figure S2 (Supplementary material)
+plotmeans(table$ANXIETY_STATE~table$SUB_PERIODS, main="Fig. S2. State-Anxiety by quarantine sub-periods. Mean plot with 95% Confidence Interval", cex.main = 0.8, ylab = "State-Anxiety", xlab = "Quarantine's sub periods")
+
+mean(table$ANXIETY_STATE) # mean = 31.77545
+std.error(table$ANXIETY_STATE) # std. error = 0.436393
+# low:
+prop.table(table(table$ANXIETY_STATE<32,table$SUB_PERIODS))*100
+# high:
+prop.table(table(table$ANXIETY_STATE>=32,table$SUB_PERIODS))*100
+
+
+
+
+# ANXIETY TRAIT
+anovatempanxtrait <- aov(table$ANXIETY_TRAIT~table$SUB_PERIODS)
+anovatempanxtrait
+summary(anovatempanxtrait)
+plot(anovatempanxtrait)
+pairwise.t.test(x = table$ANXIETY_TRAIT, g = table$SUB_PERIODS, p.adjust.method = "bonferroni", pool.sd = TRUE, paired = FALSE, alternative = "two.sided")
+# significant differences
+# 2./3. EXT POST-1. EXT POST p adj 0.046
+# 4. EXT POST-1. EXT POST p adj 0.022
+#effectsize::cohens_f(anovatempanxtrait, ci = 0.95, partial = TRUE, type = 1)
+
+tapply(table$ANXIETY_TRAIT,factor(table$SUB_PERIODS),mean)
+tapply(table$ANXIETY_TRAIT,factor(table$SUB_PERIODS),std.error)
+
+
+# Figure S3 (Supplementary material)
+plotmeans(table$ANXIETY_TRAIT~table$SUB_PERIODS, main="Fig. S3. Trait-Anxiety by quarantine sub-periods. Mean plot with 95% Confidence Interval", cex.main = 0.8, ylab = "Trait-Anxiety", xlab = "Quarantine's sub periods")
+
+mean(table$ANXIETY_TRAIT) # mean = 26.89727
+std.error(table$ANXIETY_TRAIT) # std. error = 0.3662711
+# low:
+prop.table(table(table$ANXIETY_TRAIT<27,table$SUB_PERIODS))*100
+# high:
+prop.table(table(table$ANXIETY_TRAIT>=27,table$SUB_PERIODS))*100
+
+
+
+
+# SUICIDAL RISK
+anovatempsuic <- aov(table$SUIC_RISK~table$SUB_PERIODS)
+anovatempsuic
+summary(anovatempsuic)
+plot(anovatempsuic)
+pairwise.t.test(x = table$SUIC_RISK, g = table$SUB_PERIODS, p.adjust.method = "bonferroni", pool.sd = TRUE, paired = FALSE, alternative = "two.sided")
+# significant differences
+# 4. EXT POST-1. EXT POST p adj 0.030
+#effectsize::cohens_f(anovatempsuic, ci = 0.95, partial = TRUE, type = 1)
+
+tapply(table$SUIC_RISK,factor(table$SUB_PERIODS),mean)
+tapply(table$SUIC_RISK,factor(table$SUB_PERIODS),std.error)
+
+
+# Figure S4 (Supplementary material)
+plotmeans(table$SUIC_RISK~table$SUB_PERIODS, main="Fig. S4. Suicidal risk by quarantine sub-periods. Mean plot with 95% Confidence Interval", cex.main = 0.8, ylab = "Suicidal risk", xlab = "Quarantine's sub periods")
+
+mean(table$SUIC_RISK) # mean = 30.32182
+std.error(table$SUIC_RISK) # std. error = 0.4926946
+# Percentage distribution by cutoff score:
+# low:
+prop.table(table(table$SUIC_RISK<30,table$SUB_PERIODS))*100
+# moderate:
+prop.table(table(table$SUIC_RISK>=30&table$SUIC_RISK<=44,table$SUB_PERIODS))*100
+# high:
+prop.table(table(table$SUIC_RISK>=45,table$SUB_PERIODS))*100
+
+
+###########################################################################################
+######################################### AIM 2 ###########################################
+
+##########################################################################
+## 2) Multiple linear regressions:
+
+# We performed stepwise selection (direction = both) using the stepAIC() function from the MASS package.
+library(MASS)
+# stepAIC() performs stepwise model selection by exact AIC
+
+
+#### DEPRESSION:
+# Stepwise Regression
+fitwith<-lm(DEPRESSION~SEX+AGE+PROVINCE+EDUCATION+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+stepwith <- stepAIC(fitwith, trace=TRUE,direction="both")
+stepwith
+stepwith$anova # display results
+# Stepwise Model Path 
+# Analysis of Deviance Table
+# Initial Model: DEPRESSION ~ SEX + AGE + PROVINCE + EDUCATION + ECONOMIC_INCOME + LIVING_WITH_SOMEBODY + MENTAL_DISORDER_HISTORY + SUIC_ATTEMPT_HISTORY + SUB_PERIODS
+# Start:  AIC = 4951.51
+# Final Model: DEPRESSION ~ SEX + AGE + ECONOMIC_INCOME + MENTAL_DISORDER_HISTORY + SUIC_ATTEMPT_HISTORY + SUB_PERIODS
+# Stepwith:  AIC = 4938.7
+summary(stepwith)
+
+# 95% Confidence interval of best-fitted model:
+confint(stepwith)
+
+# ERROR RATE of best-fitted model:
+sigma(stepwith)/mean(table$DEPRESSION)
+# 0.5989474
+# In our multiple regression example, the Residual Standard Error (RSE) or sigma is 9.401 corresponding to 60% error rate.
+
+par(mfrow=c(2,2))
+# Figure S5 (Supplementary material)
+plot(stepwith)
+par(mfrow=c(1,1))
+
+
+# TABLE 1:
+
+# Model 1: INITIAL MODEL:
+model1<-lm(DEPRESSION~SEX+AGE+PROVINCE+EDUCATION+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model1)
+# YES significative p-value < 2.2e-16
+
+# Model 2 eliminates PROVINCE:
+model2<-lm(DEPRESSION~SEX+AGE+EDUCATION+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model2)
+# YES significative p-value < 2.2e-16
+
+# Model 3 eliminates EDUCATION:
+model3<-lm(DEPRESSION~SEX+AGE+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model3)
+# YES significative p-value < 2.2e-16
+
+# Model 4 eliminates LIVING_WITH_SOMEBODY:
+model4<-lm(DEPRESSION~SEX+AGE+ECONOMIC_INCOME+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model4)
+# YES significative p-value < 2.2e-16
+
+
+
+
+################
+## Considering the predictors included in the best-fitted model (i.e., stepwith) in this group, we analyzed the smallest possible linear model for each specific MHS indicator by means of all two-predictor combinations.  
+# We performed all-subsets regression using the regsubsets() function from the leaps package.
+# We analyzed the three best models for two-predictor subset sizes.
+
+library(leaps)
+leapsbestwith<-regsubsets(DEPRESSION~SEX+AGE+ECONOMIC_INCOME+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table,nbest=3)
+summary(leapsbestwith)
+# The best two-predictors model was: DEPRESSION ~ AGE + SUIC_ATTEMPT_HISTORY==no
+
+plot(leapsbestwith,scale="r2")
+plot(leapsbestwith,scale="adjr2")
+
+# First: AGE + SUIC_ATTEMPT_HISTORY (no):
+besttwowithfirst<-lm(DEPRESSION~AGE+SUIC_ATTEMPT_HISTORY,data=table)
+besttwowithfirst
+summary(besttwowithfirst)
+confint(besttwowithfirst)
+
+# Second: SEX (woman) + SUIC_ATTEMPT_HISTORY (no):
+besttwowithsecond<-lm(DEPRESSION~SEX+SUIC_ATTEMPT_HISTORY,data=table)
+besttwowithsecond
+summary(besttwowithsecond)
+confint(besttwowithsecond)
+
+# Third: SUIC_ATTEMPT_HISTORY (no) + SUB PERIODS (4. EXT POST):
+besttwowiththird<-lm(DEPRESSION~SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+besttwowiththird
+summary(besttwowiththird)
+confint(besttwowiththird)
+
+
+
+
+
+#### ANXIETY-STATE:
+# Stepwise Regression
+fitwith<-lm(ANXIETY_STATE~SEX+AGE+PROVINCE+EDUCATION+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+stepwith <- stepAIC(fitwith, trace=TRUE,direction="both")
+stepwith
+stepwith$anova # display results
+# Stepwise Model Path 
+# Analysis of Deviance Table
+# Initial Model: ANXIETY_STATE ~ SEX + AGE + PROVINCE + EDUCATION + ECONOMIC_INCOME + LIVING_WITH_SOMEBODY + MENTAL_DISORDER_HISTORY + SUIC_ATTEMPT_HISTORY + SUB_PERIODS
+# Start:  AIC = 5679.05
+# Final Model: ANXIETY_STATE ~ SEX + AGE + MENTAL_DISORDER_HISTORY + SUIC_ATTEMPT_HISTORY + SUB_PERIODS
+# Stepwith:  AIC = 5660.25
+summary(stepwith)
+
+# 95% Confidence interval of best-fitted model:
+confint(stepwith)
+
+# ERROR RATE of best-fitted model:
+sigma(stepwith)/mean(table$ANXIETY_STATE)
+# 0.4108702
+# In our multiple regression example, the Residual Standard Error (RSE) or sigma is 13.06 corresponding to 41% error rate.
+
+par(mfrow=c(2,2))
+# Figure S6 (Supplementary material)
+plot(stepwith)
+par(mfrow=c(1,1))
+
+
+# TABLE 1:
+
+# Model 1: INITIAL MODEL:
+model1<-lm(ANXIETY_STATE~SEX+AGE+PROVINCE+EDUCATION+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model1)
+# YES significative p-value < 2.2e-16
+
+# Model 2 eliminates PROVINCE:
+model2<-lm(ANXIETY_STATE~SEX+AGE+EDUCATION+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model2)
+# YES significative p-value < 2.2e-16
+
+# Model 3 eliminates EDUCATION:
+model3<-lm(ANXIETY_STATE~SEX+AGE+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model3)
+# YES significative p-value < 2.2e-16
+
+# Model 4 eliminates ECONOMIC_INCOME:
+model4<-lm(ANXIETY_STATE~SEX+AGE+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model4)
+# YES significative p-value < 2.2e-16
+
+# Model 5 eliminates LIVING_WITH_SOMEBODY:
+model5<-lm(ANXIETY_STATE~SEX+AGE+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model5)
+# YES significative p-value < 2.2e-16
+
+
+
+################
+## Considering the predictors included in the best-fitted model (i.e., stepwith) in this group, we analyzed the smallest possible linear model for each specific MHS indicator by means of all two-predictor combinations.  
+# We performed all-subsets regression using the regsubsets() function from the leaps package.
+# We analyzed the three best models for two-predictor subset sizes.
+
+leapsbestwith<-regsubsets(ANXIETY_STATE~SEX+AGE+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table,nbest=3)
+summary(leapsbestwith)
+# The best two-predictors model was: ANXIETY_STATE ~ AGE + SUIC_ATTEMPT_HISTORY==no
+
+plot(leapsbestwith,scale="r2")
+plot(leapsbestwith,scale="adjr2")
+
+# First: AGE + SUIC_ATTEMPT_HISTORY (no):
+besttwowithfirst<-lm(ANXIETY_STATE~AGE+SUIC_ATTEMPT_HISTORY,data=table)
+besttwowithfirst
+summary(besttwowithfirst)
+confint(besttwowithfirst)
+
+# Second: MENTAL DISORDER (yes) + SUIC_ATTEMPT_HISTORY (no):
+besttwowithsecond<-lm(ANXIETY_STATE~MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY,data=table)
+besttwowithsecond
+summary(besttwowithsecond)
+confint(besttwowithsecond)
+
+# Third: AGE + MENTAL DISORDER (yes):
+besttwowiththird<-lm(ANXIETY_STATE~AGE+MENTAL_DISORDER_HISTORY,data=table)
+besttwowiththird
+summary(besttwowiththird)
+confint(besttwowiththird)
+
+
+
+
+#### ANXIETY-TRAIT:
+# Stepwise Regression
+fitwith<-lm(ANXIETY_TRAIT~SEX+AGE+PROVINCE+EDUCATION+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+stepwith <- stepAIC(fitwith, trace=TRUE,direction="both")
+stepwith
+stepwith$anova # display results
+# Stepwise Model Path 
+# Analysis of Deviance Table
+# Initial Model: ANXIETY_TRAIT ~ SEX + AGE + PROVINCE + EDUCATION + ECONOMIC_INCOME + LIVING_WITH_SOMEBODY + MENTAL_DISORDER_HISTORY + SUIC_ATTEMPT_HISTORY + SUB_PERIODS
+# Start:  AIC = 5137.82
+# Final Model: ANXIETY_TRAIT ~ SEX + AGE + ECONOMIC_INCOME + MENTAL_DISORDER_HISTORY + SUIC_ATTEMPT_HISTORY
+# Stepwith:  AIC = 5123.92
+summary(stepwith)
+
+# 95% Confidence interval of best-fitted model:
+confint(stepwith)
+
+# ERROR RATE of best-fitted model:
+sigma(stepwith)/mean(table$ANXIETY_TRAIT)
+# 0.380548
+# In our multiple regression example, the Residual Standard Error (RSE) or sigma is 10.24 corresponding to 38% error rate.
+
+par(mfrow=c(2,2))
+# Figure S7 (Supplementary material)
+plot(stepwith)
+par(mfrow=c(1,1))
+
+
+
+# TABLE 1:
+
+# Model 1: INITIAL MODEL:
+model1<-lm(ANXIETY_TRAIT~SEX+AGE+PROVINCE+EDUCATION+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model1)
+# YES significative p-value < 2.2e-16
+
+# Model 2 eliminates EDUCATION:
+model2<-lm(ANXIETY_TRAIT~SEX+AGE+PROVINCE+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model2)
+# YES significative p-value < 2.2e-16
+
+# Model 3 eliminates PROVINCE:
+model3<-lm(ANXIETY_TRAIT~SEX+AGE+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model3)
+# YES significative p-value < 2.2e-16
+
+# Model 4 eliminates LIVING_WITH_SOMEBODY:
+model4<-lm(ANXIETY_TRAIT~SEX+AGE+ECONOMIC_INCOME+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model4)
+# YES significative p-value < 2.2e-16
+
+# Model 5 eliminates SUB PERIODS:
+model4<-lm(ANXIETY_TRAIT~SEX+AGE+ECONOMIC_INCOME+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY,data=table)
+summary(model4)
+# YES significative p-value < 2.2e-16
+
+
+
+
+################
+## Considering the predictors included in the best-fitted model (i.e., stepwith) in this group, we analyzed the smallest possible linear model for each specific MHS indicator by means of all two-predictor combinations.  
+# We performed all-subsets regression using the regsubsets() function from the leaps package.
+# We analyzed the three best models for two-predictor subset sizes.
+
+leapsbestwith<-regsubsets(ANXIETY_TRAIT~SEX+AGE+ECONOMIC_INCOME+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY,data=table,nbest=3)
+summary(leapsbestwith)
+# The best two-predictors model was: ANXIETY_STATE ~ AGE + SUIC_ATTEMPT_HISTORY==no
+
+plot(leapsbestwith,scale="r2")
+plot(leapsbestwith,scale="adjr2")
+
+# First: AGE + SUIC_ATTEMPT_HISTORY (no):
+besttwowithfirst<-lm(ANXIETY_TRAIT~AGE+SUIC_ATTEMPT_HISTORY,data=table)
+besttwowithfirst
+summary(besttwowithfirst)
+confint(besttwowithfirst)
+
+# Second: MENTAL DISORDER (yes) + SUIC_ATTEMPT_HISTORY (no):
+besttwowithsecond<-lm(ANXIETY_TRAIT~MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY,data=table)
+besttwowithsecond
+summary(besttwowithsecond)
+confint(besttwowithsecond)
+
+# Third: SEX (woman) + SUIC_ATTEMPT_HISTORY (no):
+besttwowiththird<-lm(ANXIETY_TRAIT~SEX+SUIC_ATTEMPT_HISTORY,data=table)
+besttwowiththird
+summary(besttwowiththird)
+confint(besttwowiththird)
+
+
+
+
+#### SUICIDAL RISK:
+# Stepwise Regression
+fitwith<-lm(SUIC_RISK~SEX+AGE+PROVINCE+EDUCATION+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+stepwith <- stepAIC(fitwith, trace=TRUE,direction="both")
+stepwith
+stepwith$anova # display results
+# Stepwise Model Path 
+# Analysis of Deviance Table
+# Initial Model: SUIC_RISK ~ SEX + AGE + PROVINCE + EDUCATION + ECONOMIC_INCOME + LIVING_WITH_SOMEBODY + MENTAL_DISORDER_HISTORY + SUIC_ATTEMPT_HISTORY + SUB_PERIODS
+# Start:  AIC = 5732.18
+# Final Model: SUIC_RISK ~ SEX + AGE + ECONOMIC_INCOME + MENTAL_DISORDER_HISTORY + SUIC_ATTEMPT_HISTORY
+# Stepwith:  AIC = 5715.52
+summary(stepwith)
+
+# 95% Confidence interval of best-fitted model:
+confint(stepwith)
+
+# ERROR RATE of best-fitted model:
+sigma(stepwith)/mean(table$SUIC_RISK)
+# 0.4417225
+# In our multiple regression example, the Residual Standard Error (RSE) or sigma is 13.39 corresponding to 44% error rate.
+
+par(mfrow=c(2,2))
+# Figure S8 (Supplementary material)
+plot(stepwith)
+par(mfrow=c(1,1))
+
+
+# TABLE 1:
+
+# Model 1: INITIAL MODEL:
+model1<-lm(SUIC_RISK~SEX+AGE+PROVINCE+EDUCATION+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model1)
+# YES significative p-value < 2.2e-16
+
+# Model 2 eliminates PROVINCE:
+model2<-lm(SUIC_RISK~SEX+AGE+EDUCATION+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model2)
+# YES significative p-value < 2.2e-16
+
+# Model 3 eliminates EDUCATION:
+model3<-lm(SUIC_RISK~SEX+AGE+ECONOMIC_INCOME+LIVING_WITH_SOMEBODY+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model3)
+# YES significative p-value < 2.2e-16
+
+# Model 4 eliminates LIVING_WITH_SOMEBODY:
+model4<-lm(SUIC_RISK~SEX+AGE+ECONOMIC_INCOME+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY+SUB_PERIODS,data=table)
+summary(model4)
+# YES significative p-value < 2.2e-16
+
+# Model 5 eliminates SUB PERIODS:
+model5<-lm(SUIC_RISK~SEX+AGE+ECONOMIC_INCOME+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY,data=table)
+summary(model5)
+# YES significative p-value < 2.2e-16
+
+
+################
+## Considering the predictors included in the best-fitted model (i.e., stepwith) in this group, we analyzed the smallest possible linear model for each specific MHS indicator by means of all two-predictor combinations.  
+# We performed all-subsets regression using the regsubsets() function from the leaps package.
+# We analyzed the three best models for two-predictor subset sizes.
+
+leapsbestwith<-regsubsets(SUIC_RISK~SEX+AGE+ECONOMIC_INCOME+MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY,data=table,nbest=3)
+summary(leapsbestwith)
+# The best two-predictors model was: ANXIETY_STATE ~ AGE + SUIC_ATTEMPT_HISTORY==no
+
+plot(leapsbestwith,scale="r2")
+plot(leapsbestwith,scale="adjr2")
+
+# First: AGE + SUIC_ATTEMPT_HISTORY (no):
+besttwowithfirst<-lm(SUIC_RISK~AGE+SUIC_ATTEMPT_HISTORY,data=table)
+besttwowithfirst
+summary(besttwowithfirst)
+confint(besttwowithfirst)
+
+# Second: MENTAL DISORDER (yes) + SUIC_ATTEMPT_HISTORY (no):
+besttwowithsecond<-lm(SUIC_RISK~MENTAL_DISORDER_HISTORY+SUIC_ATTEMPT_HISTORY,data=table)
+besttwowithsecond
+summary(besttwowithsecond)
+confint(besttwowithsecond)
+
+# Third: ECONOMIC_INCOME (yes) + SUIC_ATTEMPT_HISTORY (no):
+besttwowiththird<-lm(SUIC_RISK~ECONOMIC_INCOME+SUIC_ATTEMPT_HISTORY,data=table)
+besttwowiththird
+summary(besttwowiththird)
+confint(besttwowiththird)
+
+
+```
+
+
+
+```

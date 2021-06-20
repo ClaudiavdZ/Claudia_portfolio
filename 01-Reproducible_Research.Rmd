@@ -50,9 +50,14 @@ The positive control for this experiments is __naphthale__. The negative control
 After reviewing the data, we could proceed with the analysis of the data to find out whether there is indeed an effect of different concentrations on offspring count and whether the different compounds have a different curve. To find out, first check whether the data is normally distributed. This can be done with the shapio-wilk test. This can be used to determine whether a parametric or non-parametric test can be used to see if there is a statistically significant difference between the different groups.
 
 Finaly we normalize the data for the controlNegative in such a way that the mean value for controlNegative is exactly equal to 1 and all other values are expressed as a fraction thereof. Than we rerun the graph with the normalized data.
+```{r}
+normalize <- function(x) {
+return ((x - min(x)) / (max(x) - min(x)))
+}
+library(dplyr)
+negative <- dplyr::filter(ce_liq_flow_062, expType == "controlNegative")
+wat <- normalize(negative$compConcentration)
+```
 
+But because of the compConcentration of the negatve control sample is already 0 nothing will change. 
 
-
-
-
-H.Why would you want to take the step under J?
