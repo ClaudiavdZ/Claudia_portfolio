@@ -95,22 +95,25 @@ ggplot(data = alltogether, aes(x = continent, y = flu)) +
 ```{r}
 shapiro.test(alltogether$fertility)
 shapiro.test(alltogether$flu)
-
-shapiro.test(alltogether$dengue)
-shapiro.test(alltogether$infant_mortality)
-shapiro.test(alltogether$life_expectancy)
-shapiro.test(alltogether$gdp)
-shapiro.test(alltogether$population)
-
 library(car)
 leveneTest(alltogether$fertility, alltogether$flu, center = mean)
 #no equal variance
+t.test (alltogether$fertility, alltogether$flu, paired = FALSE, var.equal = FALSE)
+#there is a significant difference
 
+shapiro.test(alltogether$dengue)
+shapiro.test(alltogether$infant_mortality)
 leveneTest(alltogether$dengue, alltogether$infant_mortality, center = mean)
 #no equal variance
+t.test (alltogether$dengue, alltogether$infant_mortality, paired = FALSE, var.equal = FALSE)
+#there is a significant difference
 
+shapiro.test(alltogether$life_expectancy)
+shapiro.test(alltogether$population)
 leveneTest(alltogether$population, alltogether$life_expectancy, center = mean)
 #no equal variance
+t.test (alltogether$population, alltogether$life_expectancy, paired = FALSE, var.equal = FALSE)
+#there is a significant difference
 
 ```
 

@@ -1,13 +1,14 @@
 --- 
-params: 
-  data:https://opendata.ecdc.europa.eu/covid19/nationalcasedeath_eueea_daily_ei/xlsx/data.xlsx
+params:
+  data: "data/parameter/data.csv"
 ---
 # Parameters
-
+In this chapther we will make parameterized script.
 ```{r}
-data <- read.csv("data/parameter/data.csv")
-library(tidyverse)
-ggplot(data, aes(x = month, y = deaths))+
+data <- read.csv(params$data)
+data <- data %>% filter(month >= 3)
+
+ggplot(data, aes(x = month , y = deaths))+
   geom_line(aes(colour = countriesAndTerritories))
 
 

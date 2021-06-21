@@ -9,7 +9,7 @@ biblio-style: apalike
 link-citations: yes
 description: "This is my portfolio."
 params: 
-  data:https://opendata.ecdc.europa.eu/covid19/nationalcasedeath_eueea_daily_ei/xlsx/data.xlsx
+  data: "data/parameter/data.csv"
 ---
 
 # Introduction

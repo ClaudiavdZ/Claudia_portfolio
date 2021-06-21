@@ -204,65 +204,65 @@ div.csl-indent {
 <div id="machine-learning" class="section level1" number="11">
 <h1><span class="header-section-number">Chapter 11</span> Machine learning</h1>
 <p>This chapter contains my self-study assignment which I explained in the previous chapter. I’m going to try to train the algorithm in such a way that it can distinguish the Friesian breed from the Fjord breed. First I have to collect the data. I have collect the pictures from google, and i have select them by hand. Than I load them in rstudio an cut them so they are all the same size.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="machine-learning.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load libraries</span></span>
-<span id="cb71-2"><a href="machine-learning.html#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jpeg)</span>
-<span id="cb71-3"><a href="machine-learning.html#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EBImage)</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="machine-learning.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load libraries</span></span>
+<span id="cb75-2"><a href="machine-learning.html#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jpeg)</span>
+<span id="cb75-3"><a href="machine-learning.html#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EBImage)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;EBImage&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:purrr&#39;:
 ## 
 ##     transpose</code></pre>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="machine-learning.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Paths to images</span></span>
-<span id="cb74-2"><a href="machine-learning.html#cb74-2" aria-hidden="true" tabindex="-1"></a>fjordpath <span class="ot">=</span> <span class="st">&quot;./ExtraOpdracht/Fjord&quot;</span></span>
-<span id="cb74-3"><a href="machine-learning.html#cb74-3" aria-hidden="true" tabindex="-1"></a>friespath <span class="ot">=</span>  <span class="st">&quot;./ExtraOpdracht/Fries&quot;</span></span>
-<span id="cb74-4"><a href="machine-learning.html#cb74-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-5"><a href="machine-learning.html#cb74-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Paths to cut images</span></span>
-<span id="cb74-6"><a href="machine-learning.html#cb74-6" aria-hidden="true" tabindex="-1"></a>newfjordpath <span class="ot">=</span> <span class="st">&quot;./ExtraOpdracht/FjordC&quot;</span></span>
-<span id="cb74-7"><a href="machine-learning.html#cb74-7" aria-hidden="true" tabindex="-1"></a>newfriespath <span class="ot">=</span> <span class="st">&quot;./ExtraOpdracht/FriesC&quot;</span></span>
-<span id="cb74-8"><a href="machine-learning.html#cb74-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-9"><a href="machine-learning.html#cb74-9" aria-hidden="true" tabindex="-1"></a><span class="co">#list to file names</span></span>
-<span id="cb74-10"><a href="machine-learning.html#cb74-10" aria-hidden="true" tabindex="-1"></a>filenames <span class="ot">=</span> <span class="fu">list.files</span>(fjordpath)</span>
-<span id="cb74-11"><a href="machine-learning.html#cb74-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-12"><a href="machine-learning.html#cb74-12" aria-hidden="true" tabindex="-1"></a><span class="co">#loop through filenames</span></span>
-<span id="cb74-13"><a href="machine-learning.html#cb74-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (name <span class="cf">in</span> filenames) {</span>
-<span id="cb74-14"><a href="machine-learning.html#cb74-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-15"><a href="machine-learning.html#cb74-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ignore errors (not jpg files)</span></span>
-<span id="cb74-16"><a href="machine-learning.html#cb74-16" aria-hidden="true" tabindex="-1"></a> <span class="fu">tryCatch</span>({</span>
-<span id="cb74-17"><a href="machine-learning.html#cb74-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Read images</span></span>
-<span id="cb74-18"><a href="machine-learning.html#cb74-18" aria-hidden="true" tabindex="-1"></a>    image <span class="ot">=</span> <span class="fu">readJPEG</span>(<span class="fu">paste</span>(fjordpath,name, <span class="at">sep=</span><span class="st">&quot;/&quot;</span>))</span>
-<span id="cb74-19"><a href="machine-learning.html#cb74-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb74-20"><a href="machine-learning.html#cb74-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check minimum dimension and cut image according to the dimension</span></span>
-<span id="cb74-21"><a href="machine-learning.html#cb74-21" aria-hidden="true" tabindex="-1"></a>    mindim <span class="ot">=</span> <span class="fu">min</span>(<span class="fu">dim</span>(image)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
-<span id="cb74-22"><a href="machine-learning.html#cb74-22" aria-hidden="true" tabindex="-1"></a>    newimage <span class="ot">=</span> image[<span class="dv">1</span><span class="sc">:</span>mindim,<span class="dv">1</span><span class="sc">:</span>mindim,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb74-23"><a href="machine-learning.html#cb74-23" aria-hidden="true" tabindex="-1"></a>    newimage <span class="ot">=</span> <span class="fu">resize</span>(newimage, <span class="at">w=</span><span class="dv">100</span>, <span class="at">h=</span><span class="dv">100</span>)</span>
-<span id="cb74-24"><a href="machine-learning.html#cb74-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Write cut image</span></span>
-<span id="cb74-25"><a href="machine-learning.html#cb74-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeJPEG</span>(newimage, <span class="fu">paste</span>(newfjordpath, name, <span class="at">sep=</span><span class="st">&quot;/cut_&quot;</span>))</span>
-<span id="cb74-26"><a href="machine-learning.html#cb74-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb74-27"><a href="machine-learning.html#cb74-27" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error=</span><span class="cf">function</span>(e){})</span>
-<span id="cb74-28"><a href="machine-learning.html#cb74-28" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb74-29"><a href="machine-learning.html#cb74-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-30"><a href="machine-learning.html#cb74-30" aria-hidden="true" tabindex="-1"></a><span class="co"># same but for friesian horse images</span></span>
-<span id="cb74-31"><a href="machine-learning.html#cb74-31" aria-hidden="true" tabindex="-1"></a>filenames <span class="ot">=</span> <span class="fu">list.files</span>(friespath)</span>
-<span id="cb74-32"><a href="machine-learning.html#cb74-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (name <span class="cf">in</span> filenames) {</span>
-<span id="cb74-33"><a href="machine-learning.html#cb74-33" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb74-34"><a href="machine-learning.html#cb74-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
-<span id="cb74-35"><a href="machine-learning.html#cb74-35" aria-hidden="true" tabindex="-1"></a>    image <span class="ot">=</span> <span class="fu">readJPEG</span>(<span class="fu">paste</span>(friespath,name, <span class="at">sep=</span><span class="st">&quot;/&quot;</span>))</span>
-<span id="cb74-36"><a href="machine-learning.html#cb74-36" aria-hidden="true" tabindex="-1"></a>    mindim <span class="ot">=</span> <span class="fu">min</span>(<span class="fu">dim</span>(image)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
-<span id="cb74-37"><a href="machine-learning.html#cb74-37" aria-hidden="true" tabindex="-1"></a>    newimage <span class="ot">=</span> image[<span class="dv">1</span><span class="sc">:</span>mindim,<span class="dv">1</span><span class="sc">:</span>mindim,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb74-38"><a href="machine-learning.html#cb74-38" aria-hidden="true" tabindex="-1"></a>    newimage <span class="ot">=</span> <span class="fu">resize</span>(newimage, <span class="at">w=</span><span class="dv">100</span>, <span class="at">h=</span><span class="dv">100</span>)</span>
-<span id="cb74-39"><a href="machine-learning.html#cb74-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeJPEG</span>(newimage, <span class="fu">paste</span>(newfriespath, name, <span class="at">sep=</span><span class="st">&quot;/cut_&quot;</span>))</span>
-<span id="cb74-40"><a href="machine-learning.html#cb74-40" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb74-41"><a href="machine-learning.html#cb74-41" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error=</span><span class="cf">function</span>(e){})</span>
-<span id="cb74-42"><a href="machine-learning.html#cb74-42" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="machine-learning.html#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Paths to images</span></span>
+<span id="cb78-2"><a href="machine-learning.html#cb78-2" aria-hidden="true" tabindex="-1"></a>fjordpath <span class="ot">=</span> <span class="st">&quot;./ExtraOpdracht/Fjord&quot;</span></span>
+<span id="cb78-3"><a href="machine-learning.html#cb78-3" aria-hidden="true" tabindex="-1"></a>friespath <span class="ot">=</span>  <span class="st">&quot;./ExtraOpdracht/Fries&quot;</span></span>
+<span id="cb78-4"><a href="machine-learning.html#cb78-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-5"><a href="machine-learning.html#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Paths to cut images</span></span>
+<span id="cb78-6"><a href="machine-learning.html#cb78-6" aria-hidden="true" tabindex="-1"></a>newfjordpath <span class="ot">=</span> <span class="st">&quot;./ExtraOpdracht/FjordC&quot;</span></span>
+<span id="cb78-7"><a href="machine-learning.html#cb78-7" aria-hidden="true" tabindex="-1"></a>newfriespath <span class="ot">=</span> <span class="st">&quot;./ExtraOpdracht/FriesC&quot;</span></span>
+<span id="cb78-8"><a href="machine-learning.html#cb78-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-9"><a href="machine-learning.html#cb78-9" aria-hidden="true" tabindex="-1"></a><span class="co">#list to file names</span></span>
+<span id="cb78-10"><a href="machine-learning.html#cb78-10" aria-hidden="true" tabindex="-1"></a>filenames <span class="ot">=</span> <span class="fu">list.files</span>(fjordpath)</span>
+<span id="cb78-11"><a href="machine-learning.html#cb78-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-12"><a href="machine-learning.html#cb78-12" aria-hidden="true" tabindex="-1"></a><span class="co">#loop through filenames</span></span>
+<span id="cb78-13"><a href="machine-learning.html#cb78-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (name <span class="cf">in</span> filenames) {</span>
+<span id="cb78-14"><a href="machine-learning.html#cb78-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-15"><a href="machine-learning.html#cb78-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ignore errors (not jpg files)</span></span>
+<span id="cb78-16"><a href="machine-learning.html#cb78-16" aria-hidden="true" tabindex="-1"></a> <span class="fu">tryCatch</span>({</span>
+<span id="cb78-17"><a href="machine-learning.html#cb78-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Read images</span></span>
+<span id="cb78-18"><a href="machine-learning.html#cb78-18" aria-hidden="true" tabindex="-1"></a>    image <span class="ot">=</span> <span class="fu">readJPEG</span>(<span class="fu">paste</span>(fjordpath,name, <span class="at">sep=</span><span class="st">&quot;/&quot;</span>))</span>
+<span id="cb78-19"><a href="machine-learning.html#cb78-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb78-20"><a href="machine-learning.html#cb78-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check minimum dimension and cut image according to the dimension</span></span>
+<span id="cb78-21"><a href="machine-learning.html#cb78-21" aria-hidden="true" tabindex="-1"></a>    mindim <span class="ot">=</span> <span class="fu">min</span>(<span class="fu">dim</span>(image)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
+<span id="cb78-22"><a href="machine-learning.html#cb78-22" aria-hidden="true" tabindex="-1"></a>    newimage <span class="ot">=</span> image[<span class="dv">1</span><span class="sc">:</span>mindim,<span class="dv">1</span><span class="sc">:</span>mindim,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb78-23"><a href="machine-learning.html#cb78-23" aria-hidden="true" tabindex="-1"></a>    newimage <span class="ot">=</span> <span class="fu">resize</span>(newimage, <span class="at">w=</span><span class="dv">100</span>, <span class="at">h=</span><span class="dv">100</span>)</span>
+<span id="cb78-24"><a href="machine-learning.html#cb78-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Write cut image</span></span>
+<span id="cb78-25"><a href="machine-learning.html#cb78-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeJPEG</span>(newimage, <span class="fu">paste</span>(newfjordpath, name, <span class="at">sep=</span><span class="st">&quot;/cut_&quot;</span>))</span>
+<span id="cb78-26"><a href="machine-learning.html#cb78-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb78-27"><a href="machine-learning.html#cb78-27" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error=</span><span class="cf">function</span>(e){})</span>
+<span id="cb78-28"><a href="machine-learning.html#cb78-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb78-29"><a href="machine-learning.html#cb78-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-30"><a href="machine-learning.html#cb78-30" aria-hidden="true" tabindex="-1"></a><span class="co"># same but for friesian horse images</span></span>
+<span id="cb78-31"><a href="machine-learning.html#cb78-31" aria-hidden="true" tabindex="-1"></a>filenames <span class="ot">=</span> <span class="fu">list.files</span>(friespath)</span>
+<span id="cb78-32"><a href="machine-learning.html#cb78-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (name <span class="cf">in</span> filenames) {</span>
+<span id="cb78-33"><a href="machine-learning.html#cb78-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb78-34"><a href="machine-learning.html#cb78-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb78-35"><a href="machine-learning.html#cb78-35" aria-hidden="true" tabindex="-1"></a>    image <span class="ot">=</span> <span class="fu">readJPEG</span>(<span class="fu">paste</span>(friespath,name, <span class="at">sep=</span><span class="st">&quot;/&quot;</span>))</span>
+<span id="cb78-36"><a href="machine-learning.html#cb78-36" aria-hidden="true" tabindex="-1"></a>    mindim <span class="ot">=</span> <span class="fu">min</span>(<span class="fu">dim</span>(image)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
+<span id="cb78-37"><a href="machine-learning.html#cb78-37" aria-hidden="true" tabindex="-1"></a>    newimage <span class="ot">=</span> image[<span class="dv">1</span><span class="sc">:</span>mindim,<span class="dv">1</span><span class="sc">:</span>mindim,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb78-38"><a href="machine-learning.html#cb78-38" aria-hidden="true" tabindex="-1"></a>    newimage <span class="ot">=</span> <span class="fu">resize</span>(newimage, <span class="at">w=</span><span class="dv">100</span>, <span class="at">h=</span><span class="dv">100</span>)</span>
+<span id="cb78-39"><a href="machine-learning.html#cb78-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeJPEG</span>(newimage, <span class="fu">paste</span>(newfriespath, name, <span class="at">sep=</span><span class="st">&quot;/cut_&quot;</span>))</span>
+<span id="cb78-40"><a href="machine-learning.html#cb78-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb78-41"><a href="machine-learning.html#cb78-41" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error=</span><span class="cf">function</span>(e){})</span>
+<span id="cb78-42"><a href="machine-learning.html#cb78-42" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>As you can see below the images are cut and the same side now.
 <img src="data/Machine_learning/Test/Fjord/cut_Fjord309.jpg" alt="Fjord" />
 <img src="data/Machine_learning/Test/Fries/cut_Fries023.jpg" alt="Fries" /></p>
 <p>Now we are going to make and test model.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="machine-learning.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co">#devtools::install_github(&quot;rstudio/reticulate&quot;)</span></span>
-<span id="cb75-2"><a href="machine-learning.html#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="co">#tensorflow::install_tensorflow(extra_packages=&#39;pillow&#39;)</span></span>
-<span id="cb75-3"><a href="machine-learning.html#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="co">#tensorflow::install_tensorflow(extra_packages=&#39;SciPy&#39;)</span></span>
-<span id="cb75-4"><a href="machine-learning.html#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb75-5"><a href="machine-learning.html#cb75-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="machine-learning.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co">#devtools::install_github(&quot;rstudio/reticulate&quot;)</span></span>
+<span id="cb79-2"><a href="machine-learning.html#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="co">#tensorflow::install_tensorflow(extra_packages=&#39;pillow&#39;)</span></span>
+<span id="cb79-3"><a href="machine-learning.html#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="co">#tensorflow::install_tensorflow(extra_packages=&#39;SciPy&#39;)</span></span>
+<span id="cb79-4"><a href="machine-learning.html#cb79-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb79-5"><a href="machine-learning.html#cb79-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;keras&#39;</code></pre>
 <pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
@@ -271,73 +271,73 @@ div.csl-indent {
 <pre><code>## The following object is masked from &#39;package:EBImage&#39;:
 ## 
 ##     normalize</code></pre>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="machine-learning.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tensorflow)</span>
-<span id="cb79-2"><a href="machine-learning.html#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
-<span id="cb79-3"><a href="machine-learning.html#cb79-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb79-4"><a href="machine-learning.html#cb79-4" aria-hidden="true" tabindex="-1"></a><span class="co">#index labels </span></span>
-<span id="cb79-5"><a href="machine-learning.html#cb79-5" aria-hidden="true" tabindex="-1"></a><span class="co">#0=fjord 1=fries</span></span>
-<span id="cb79-6"><a href="machine-learning.html#cb79-6" aria-hidden="true" tabindex="-1"></a>label_list <span class="ot">&lt;-</span> <span class="fu">dir</span>(<span class="st">&quot;data/Machine_learning/Train/&quot;</span>)</span>
-<span id="cb79-7"><a href="machine-learning.html#cb79-7" aria-hidden="true" tabindex="-1"></a><span class="co">#rescale size</span></span>
-<span id="cb79-8"><a href="machine-learning.html#cb79-8" aria-hidden="true" tabindex="-1"></a>width <span class="ot">&lt;-</span> <span class="dv">224</span></span>
-<span id="cb79-9"><a href="machine-learning.html#cb79-9" aria-hidden="true" tabindex="-1"></a>height<span class="ot">&lt;-</span> <span class="dv">224</span></span>
-<span id="cb79-10"><a href="machine-learning.html#cb79-10" aria-hidden="true" tabindex="-1"></a>target_size <span class="ot">&lt;-</span> <span class="fu">c</span>(width, height)</span>
-<span id="cb79-11"><a href="machine-learning.html#cb79-11" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="co">#color channels</span></span>
-<span id="cb79-12"><a href="machine-learning.html#cb79-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb79-13"><a href="machine-learning.html#cb79-13" aria-hidden="true" tabindex="-1"></a>path_train <span class="ot">&lt;-</span> <span class="st">&quot;data/Machine_learning/Train/&quot;</span></span>
-<span id="cb79-14"><a href="machine-learning.html#cb79-14" aria-hidden="true" tabindex="-1"></a><span class="co">#rescale pixel values between 0-1 and split off 20% of training data used as validation data </span></span>
-<span id="cb79-15"><a href="machine-learning.html#cb79-15" aria-hidden="true" tabindex="-1"></a>train_data_gen <span class="ot">&lt;-</span> <span class="fu">image_data_generator</span>(<span class="at">rescale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">255</span>, </span>
-<span id="cb79-16"><a href="machine-learning.html#cb79-16" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">validation_split =</span> .<span class="dv">2</span>)</span>
-<span id="cb79-17"><a href="machine-learning.html#cb79-17" aria-hidden="true" tabindex="-1"></a><span class="co">#make batches of the data in the directory (default = 32)</span></span>
-<span id="cb79-18"><a href="machine-learning.html#cb79-18" aria-hidden="true" tabindex="-1"></a><span class="co">#batches are sets of images</span></span>
-<span id="cb79-19"><a href="machine-learning.html#cb79-19" aria-hidden="true" tabindex="-1"></a>train_images <span class="ot">&lt;-</span> <span class="fu">flow_images_from_directory</span>(path_train,</span>
-<span id="cb79-20"><a href="machine-learning.html#cb79-20" aria-hidden="true" tabindex="-1"></a>                                           train_data_gen,</span>
-<span id="cb79-21"><a href="machine-learning.html#cb79-21" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">subset =</span> <span class="st">&#39;training&#39;</span>,</span>
-<span id="cb79-22"><a href="machine-learning.html#cb79-22" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">target_size =</span> target_size,</span>
-<span id="cb79-23"><a href="machine-learning.html#cb79-23" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">class_mode =</span> <span class="st">&quot;binary&quot;</span>,</span>
-<span id="cb79-24"><a href="machine-learning.html#cb79-24" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">shuffle=</span>F,</span>
-<span id="cb79-25"><a href="machine-learning.html#cb79-25" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">classes =</span> label_list,</span>
-<span id="cb79-26"><a href="machine-learning.html#cb79-26" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">seed =</span> <span class="dv">2021</span>)</span>
-<span id="cb79-27"><a href="machine-learning.html#cb79-27" aria-hidden="true" tabindex="-1"></a>validation_images <span class="ot">&lt;-</span> <span class="fu">flow_images_from_directory</span>(path_train,</span>
-<span id="cb79-28"><a href="machine-learning.html#cb79-28" aria-hidden="true" tabindex="-1"></a>                                                train_data_gen, </span>
-<span id="cb79-29"><a href="machine-learning.html#cb79-29" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">subset =</span> <span class="st">&#39;validation&#39;</span>,</span>
-<span id="cb79-30"><a href="machine-learning.html#cb79-30" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">target_size =</span> target_size,</span>
-<span id="cb79-31"><a href="machine-learning.html#cb79-31" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">class_mode =</span> <span class="st">&quot;binary&quot;</span>,</span>
-<span id="cb79-32"><a href="machine-learning.html#cb79-32" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">classes =</span> label_list,</span>
-<span id="cb79-33"><a href="machine-learning.html#cb79-33" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">seed =</span> <span class="dv">2021</span>)</span>
-<span id="cb79-34"><a href="machine-learning.html#cb79-34" aria-hidden="true" tabindex="-1"></a><span class="co">#load xception model and removes the input layer https://arxiv.org/abs/1610.02357</span></span>
-<span id="cb79-35"><a href="machine-learning.html#cb79-35" aria-hidden="true" tabindex="-1"></a>mod_base <span class="ot">&lt;-</span> <span class="fu">application_xception</span>(<span class="at">weights =</span> <span class="st">&#39;imagenet&#39;</span>, </span>
-<span id="cb79-36"><a href="machine-learning.html#cb79-36" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">include_top =</span> <span class="cn">FALSE</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(width, height, <span class="dv">3</span>))</span>
-<span id="cb79-37"><a href="machine-learning.html#cb79-37" aria-hidden="true" tabindex="-1"></a><span class="co">#make sure the exception weights don&#39;t change while training, only change the self appended layers</span></span>
-<span id="cb79-38"><a href="machine-learning.html#cb79-38" aria-hidden="true" tabindex="-1"></a><span class="fu">freeze_weights</span>(mod_base) </span>
-<span id="cb79-39"><a href="machine-learning.html#cb79-39" aria-hidden="true" tabindex="-1"></a><span class="co">#specify model parameters</span></span>
-<span id="cb79-40"><a href="machine-learning.html#cb79-40" aria-hidden="true" tabindex="-1"></a>model_function <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">learning_rate =</span> <span class="fl">0.001</span>, </span>
-<span id="cb79-41"><a href="machine-learning.html#cb79-41" aria-hidden="true" tabindex="-1"></a>                           <span class="at">dropoutrate=</span><span class="fl">0.2</span>, <span class="at">n_dense=</span><span class="dv">1024</span>){</span>
-<span id="cb79-42"><a href="machine-learning.html#cb79-42" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb79-43"><a href="machine-learning.html#cb79-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">k_clear_session</span>()</span>
-<span id="cb79-44"><a href="machine-learning.html#cb79-44" aria-hidden="true" tabindex="-1"></a>  <span class="co">#build model, append layers to exception model</span></span>
-<span id="cb79-45"><a href="machine-learning.html#cb79-45" aria-hidden="true" tabindex="-1"></a>  model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb79-46"><a href="machine-learning.html#cb79-46" aria-hidden="true" tabindex="-1"></a>    mod_base <span class="sc">%&gt;%</span> </span>
-<span id="cb79-47"><a href="machine-learning.html#cb79-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layer_global_average_pooling_2d</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb79-48"><a href="machine-learning.html#cb79-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layer_dense</span>(<span class="at">units =</span> n_dense) <span class="sc">%&gt;%</span></span>
-<span id="cb79-49"><a href="machine-learning.html#cb79-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb79-50"><a href="machine-learning.html#cb79-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layer_dropout</span>(dropoutrate) <span class="sc">%&gt;%</span></span>
-<span id="cb79-51"><a href="machine-learning.html#cb79-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layer_dense</span>(<span class="at">units=</span><span class="dv">1</span>, <span class="at">activation=</span><span class="st">&quot;sigmoid&quot;</span>)</span>
-<span id="cb79-52"><a href="machine-learning.html#cb79-52" aria-hidden="true" tabindex="-1"></a>  <span class="co">#compile model</span></span>
-<span id="cb79-53"><a href="machine-learning.html#cb79-53" aria-hidden="true" tabindex="-1"></a>  <span class="co">#use binary_crossentropy loss</span></span>
-<span id="cb79-54"><a href="machine-learning.html#cb79-54" aria-hidden="true" tabindex="-1"></a>  <span class="co">#use adem optimizer https://arxiv.org/abs/1412.6980</span></span>
-<span id="cb79-55"><a href="machine-learning.html#cb79-55" aria-hidden="true" tabindex="-1"></a>  <span class="co">#keep track of accuracy metric</span></span>
-<span id="cb79-56"><a href="machine-learning.html#cb79-56" aria-hidden="true" tabindex="-1"></a>  model <span class="sc">%&gt;%</span> <span class="fu">compile</span>(</span>
-<span id="cb79-57"><a href="machine-learning.html#cb79-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">loss =</span> <span class="st">&quot;binary_crossentropy&quot;</span>,</span>
-<span id="cb79-58"><a href="machine-learning.html#cb79-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">optimizer =</span> <span class="fu">optimizer_adam</span>(<span class="at">lr =</span> learning_rate),</span>
-<span id="cb79-59"><a href="machine-learning.html#cb79-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> <span class="st">&quot;accuracy&quot;</span></span>
-<span id="cb79-60"><a href="machine-learning.html#cb79-60" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb79-61"><a href="machine-learning.html#cb79-61" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb79-62"><a href="machine-learning.html#cb79-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(model)</span>
-<span id="cb79-63"><a href="machine-learning.html#cb79-63" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb79-64"><a href="machine-learning.html#cb79-64" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb79-65"><a href="machine-learning.html#cb79-65" aria-hidden="true" tabindex="-1"></a><span class="co">#visualize model</span></span>
-<span id="cb79-66"><a href="machine-learning.html#cb79-66" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">model_function</span>()</span>
-<span id="cb79-67"><a href="machine-learning.html#cb79-67" aria-hidden="true" tabindex="-1"></a>model</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="machine-learning.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tensorflow)</span>
+<span id="cb83-2"><a href="machine-learning.html#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb83-3"><a href="machine-learning.html#cb83-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-4"><a href="machine-learning.html#cb83-4" aria-hidden="true" tabindex="-1"></a><span class="co">#index labels </span></span>
+<span id="cb83-5"><a href="machine-learning.html#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="co">#0=fjord 1=fries</span></span>
+<span id="cb83-6"><a href="machine-learning.html#cb83-6" aria-hidden="true" tabindex="-1"></a>label_list <span class="ot">&lt;-</span> <span class="fu">dir</span>(<span class="st">&quot;data/Machine_learning/Train/&quot;</span>)</span>
+<span id="cb83-7"><a href="machine-learning.html#cb83-7" aria-hidden="true" tabindex="-1"></a><span class="co">#rescale size</span></span>
+<span id="cb83-8"><a href="machine-learning.html#cb83-8" aria-hidden="true" tabindex="-1"></a>width <span class="ot">&lt;-</span> <span class="dv">224</span></span>
+<span id="cb83-9"><a href="machine-learning.html#cb83-9" aria-hidden="true" tabindex="-1"></a>height<span class="ot">&lt;-</span> <span class="dv">224</span></span>
+<span id="cb83-10"><a href="machine-learning.html#cb83-10" aria-hidden="true" tabindex="-1"></a>target_size <span class="ot">&lt;-</span> <span class="fu">c</span>(width, height)</span>
+<span id="cb83-11"><a href="machine-learning.html#cb83-11" aria-hidden="true" tabindex="-1"></a>rgb <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="co">#color channels</span></span>
+<span id="cb83-12"><a href="machine-learning.html#cb83-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-13"><a href="machine-learning.html#cb83-13" aria-hidden="true" tabindex="-1"></a>path_train <span class="ot">&lt;-</span> <span class="st">&quot;data/Machine_learning/Train/&quot;</span></span>
+<span id="cb83-14"><a href="machine-learning.html#cb83-14" aria-hidden="true" tabindex="-1"></a><span class="co">#rescale pixel values between 0-1 and split off 20% of training data used as validation data </span></span>
+<span id="cb83-15"><a href="machine-learning.html#cb83-15" aria-hidden="true" tabindex="-1"></a>train_data_gen <span class="ot">&lt;-</span> <span class="fu">image_data_generator</span>(<span class="at">rescale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">255</span>, </span>
+<span id="cb83-16"><a href="machine-learning.html#cb83-16" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">validation_split =</span> .<span class="dv">2</span>)</span>
+<span id="cb83-17"><a href="machine-learning.html#cb83-17" aria-hidden="true" tabindex="-1"></a><span class="co">#make batches of the data in the directory (default = 32)</span></span>
+<span id="cb83-18"><a href="machine-learning.html#cb83-18" aria-hidden="true" tabindex="-1"></a><span class="co">#batches are sets of images</span></span>
+<span id="cb83-19"><a href="machine-learning.html#cb83-19" aria-hidden="true" tabindex="-1"></a>train_images <span class="ot">&lt;-</span> <span class="fu">flow_images_from_directory</span>(path_train,</span>
+<span id="cb83-20"><a href="machine-learning.html#cb83-20" aria-hidden="true" tabindex="-1"></a>                                           train_data_gen,</span>
+<span id="cb83-21"><a href="machine-learning.html#cb83-21" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">subset =</span> <span class="st">&#39;training&#39;</span>,</span>
+<span id="cb83-22"><a href="machine-learning.html#cb83-22" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">target_size =</span> target_size,</span>
+<span id="cb83-23"><a href="machine-learning.html#cb83-23" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">class_mode =</span> <span class="st">&quot;binary&quot;</span>,</span>
+<span id="cb83-24"><a href="machine-learning.html#cb83-24" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">shuffle=</span>F,</span>
+<span id="cb83-25"><a href="machine-learning.html#cb83-25" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">classes =</span> label_list,</span>
+<span id="cb83-26"><a href="machine-learning.html#cb83-26" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">seed =</span> <span class="dv">2021</span>)</span>
+<span id="cb83-27"><a href="machine-learning.html#cb83-27" aria-hidden="true" tabindex="-1"></a>validation_images <span class="ot">&lt;-</span> <span class="fu">flow_images_from_directory</span>(path_train,</span>
+<span id="cb83-28"><a href="machine-learning.html#cb83-28" aria-hidden="true" tabindex="-1"></a>                                                train_data_gen, </span>
+<span id="cb83-29"><a href="machine-learning.html#cb83-29" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">subset =</span> <span class="st">&#39;validation&#39;</span>,</span>
+<span id="cb83-30"><a href="machine-learning.html#cb83-30" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">target_size =</span> target_size,</span>
+<span id="cb83-31"><a href="machine-learning.html#cb83-31" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">class_mode =</span> <span class="st">&quot;binary&quot;</span>,</span>
+<span id="cb83-32"><a href="machine-learning.html#cb83-32" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">classes =</span> label_list,</span>
+<span id="cb83-33"><a href="machine-learning.html#cb83-33" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">seed =</span> <span class="dv">2021</span>)</span>
+<span id="cb83-34"><a href="machine-learning.html#cb83-34" aria-hidden="true" tabindex="-1"></a><span class="co">#load xception model and removes the input layer https://arxiv.org/abs/1610.02357</span></span>
+<span id="cb83-35"><a href="machine-learning.html#cb83-35" aria-hidden="true" tabindex="-1"></a>mod_base <span class="ot">&lt;-</span> <span class="fu">application_xception</span>(<span class="at">weights =</span> <span class="st">&#39;imagenet&#39;</span>, </span>
+<span id="cb83-36"><a href="machine-learning.html#cb83-36" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">include_top =</span> <span class="cn">FALSE</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(width, height, <span class="dv">3</span>))</span>
+<span id="cb83-37"><a href="machine-learning.html#cb83-37" aria-hidden="true" tabindex="-1"></a><span class="co">#make sure the exception weights don&#39;t change while training, only change the self appended layers</span></span>
+<span id="cb83-38"><a href="machine-learning.html#cb83-38" aria-hidden="true" tabindex="-1"></a><span class="fu">freeze_weights</span>(mod_base) </span>
+<span id="cb83-39"><a href="machine-learning.html#cb83-39" aria-hidden="true" tabindex="-1"></a><span class="co">#specify model parameters</span></span>
+<span id="cb83-40"><a href="machine-learning.html#cb83-40" aria-hidden="true" tabindex="-1"></a>model_function <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">learning_rate =</span> <span class="fl">0.001</span>, </span>
+<span id="cb83-41"><a href="machine-learning.html#cb83-41" aria-hidden="true" tabindex="-1"></a>                           <span class="at">dropoutrate=</span><span class="fl">0.2</span>, <span class="at">n_dense=</span><span class="dv">1024</span>){</span>
+<span id="cb83-42"><a href="machine-learning.html#cb83-42" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb83-43"><a href="machine-learning.html#cb83-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">k_clear_session</span>()</span>
+<span id="cb83-44"><a href="machine-learning.html#cb83-44" aria-hidden="true" tabindex="-1"></a>  <span class="co">#build model, append layers to exception model</span></span>
+<span id="cb83-45"><a href="machine-learning.html#cb83-45" aria-hidden="true" tabindex="-1"></a>  model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb83-46"><a href="machine-learning.html#cb83-46" aria-hidden="true" tabindex="-1"></a>    mod_base <span class="sc">%&gt;%</span> </span>
+<span id="cb83-47"><a href="machine-learning.html#cb83-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layer_global_average_pooling_2d</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb83-48"><a href="machine-learning.html#cb83-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layer_dense</span>(<span class="at">units =</span> n_dense) <span class="sc">%&gt;%</span></span>
+<span id="cb83-49"><a href="machine-learning.html#cb83-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layer_activation</span>(<span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb83-50"><a href="machine-learning.html#cb83-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layer_dropout</span>(dropoutrate) <span class="sc">%&gt;%</span></span>
+<span id="cb83-51"><a href="machine-learning.html#cb83-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">layer_dense</span>(<span class="at">units=</span><span class="dv">1</span>, <span class="at">activation=</span><span class="st">&quot;sigmoid&quot;</span>)</span>
+<span id="cb83-52"><a href="machine-learning.html#cb83-52" aria-hidden="true" tabindex="-1"></a>  <span class="co">#compile model</span></span>
+<span id="cb83-53"><a href="machine-learning.html#cb83-53" aria-hidden="true" tabindex="-1"></a>  <span class="co">#use binary_crossentropy loss</span></span>
+<span id="cb83-54"><a href="machine-learning.html#cb83-54" aria-hidden="true" tabindex="-1"></a>  <span class="co">#use adem optimizer https://arxiv.org/abs/1412.6980</span></span>
+<span id="cb83-55"><a href="machine-learning.html#cb83-55" aria-hidden="true" tabindex="-1"></a>  <span class="co">#keep track of accuracy metric</span></span>
+<span id="cb83-56"><a href="machine-learning.html#cb83-56" aria-hidden="true" tabindex="-1"></a>  model <span class="sc">%&gt;%</span> <span class="fu">compile</span>(</span>
+<span id="cb83-57"><a href="machine-learning.html#cb83-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">loss =</span> <span class="st">&quot;binary_crossentropy&quot;</span>,</span>
+<span id="cb83-58"><a href="machine-learning.html#cb83-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">optimizer =</span> <span class="fu">optimizer_adam</span>(<span class="at">lr =</span> learning_rate),</span>
+<span id="cb83-59"><a href="machine-learning.html#cb83-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> <span class="st">&quot;accuracy&quot;</span></span>
+<span id="cb83-60"><a href="machine-learning.html#cb83-60" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb83-61"><a href="machine-learning.html#cb83-61" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb83-62"><a href="machine-learning.html#cb83-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(model)</span>
+<span id="cb83-63"><a href="machine-learning.html#cb83-63" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb83-64"><a href="machine-learning.html#cb83-64" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb83-65"><a href="machine-learning.html#cb83-65" aria-hidden="true" tabindex="-1"></a><span class="co">#visualize model</span></span>
+<span id="cb83-66"><a href="machine-learning.html#cb83-66" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">model_function</span>()</span>
+<span id="cb83-67"><a href="machine-learning.html#cb83-67" aria-hidden="true" tabindex="-1"></a>model</span></code></pre></div>
 <pre><code>## Model
 ## Model: &quot;sequential&quot;
 ## ________________________________________________________________________________
@@ -359,42 +359,42 @@ div.csl-indent {
 ## Trainable params: 2,099,201
 ## Non-trainable params: 20,861,480
 ## ________________________________________________________________________________</code></pre>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="machine-learning.html#cb81-1" aria-hidden="true" tabindex="-1"></a>batch_size <span class="ot">&lt;-</span> <span class="dv">32</span></span>
-<span id="cb81-2"><a href="machine-learning.html#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="co">#numer of times the network will see all of the images</span></span>
-<span id="cb81-3"><a href="machine-learning.html#cb81-3" aria-hidden="true" tabindex="-1"></a>epochs <span class="ot">&lt;-</span> <span class="dv">6</span></span>
-<span id="cb81-4"><a href="machine-learning.html#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="co">#train model</span></span>
-<span id="cb81-5"><a href="machine-learning.html#cb81-5" aria-hidden="true" tabindex="-1"></a>hist <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">fit</span>(</span>
-<span id="cb81-6"><a href="machine-learning.html#cb81-6" aria-hidden="true" tabindex="-1"></a>  train_images,</span>
-<span id="cb81-7"><a href="machine-learning.html#cb81-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">steps_per_epoch =</span> train_images<span class="sc">$</span>n <span class="sc">%/%</span> batch_size, </span>
-<span id="cb81-8"><a href="machine-learning.html#cb81-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">epochs =</span> epochs, </span>
-<span id="cb81-9"><a href="machine-learning.html#cb81-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">validation_data =</span> validation_images,</span>
-<span id="cb81-10"><a href="machine-learning.html#cb81-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">validation_steps =</span> validation_images<span class="sc">$</span>n <span class="sc">%/%</span> batch_size,</span>
-<span id="cb81-11"><a href="machine-learning.html#cb81-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="dv">1</span></span>
-<span id="cb81-12"><a href="machine-learning.html#cb81-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb81-13"><a href="machine-learning.html#cb81-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb81-14"><a href="machine-learning.html#cb81-14" aria-hidden="true" tabindex="-1"></a>path_test <span class="ot">&lt;-</span> <span class="st">&quot;data/Machine_learning/Test/&quot;</span></span>
-<span id="cb81-15"><a href="machine-learning.html#cb81-15" aria-hidden="true" tabindex="-1"></a>test_data_gen <span class="ot">&lt;-</span> <span class="fu">image_data_generator</span>(<span class="at">rescale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">255</span>)</span>
-<span id="cb81-16"><a href="machine-learning.html#cb81-16" aria-hidden="true" tabindex="-1"></a>test_images <span class="ot">&lt;-</span> <span class="fu">flow_images_from_directory</span>(path_test,</span>
-<span id="cb81-17"><a href="machine-learning.html#cb81-17" aria-hidden="true" tabindex="-1"></a>                                          test_data_gen,</span>
-<span id="cb81-18"><a href="machine-learning.html#cb81-18" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">target_size =</span> target_size,</span>
-<span id="cb81-19"><a href="machine-learning.html#cb81-19" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">class_mode =</span> <span class="st">&quot;binary&quot;</span>,</span>
-<span id="cb81-20"><a href="machine-learning.html#cb81-20" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">classes =</span> label_list,</span>
-<span id="cb81-21"><a href="machine-learning.html#cb81-21" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">shuffle =</span> F,</span>
-<span id="cb81-22"><a href="machine-learning.html#cb81-22" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">seed =</span> <span class="dv">2021</span>)</span>
-<span id="cb81-23"><a href="machine-learning.html#cb81-23" aria-hidden="true" tabindex="-1"></a><span class="co">#test model</span></span>
-<span id="cb81-24"><a href="machine-learning.html#cb81-24" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">evaluate</span>(test_images, </span>
-<span id="cb81-25"><a href="machine-learning.html#cb81-25" aria-hidden="true" tabindex="-1"></a>                             <span class="at">steps =</span> test_images<span class="sc">$</span>n)</span></code></pre></div>
-<pre><code>##       loss   accuracy 
-## 0.02047309 1.00000000</code></pre>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="machine-learning.html#cb83-1" aria-hidden="true" tabindex="-1"></a>test_image <span class="ot">&lt;-</span> <span class="fu">image_load</span>(<span class="st">&quot;data/Machine_learning/Test/Fries/cut_Fries027.jpg&quot;</span>,</span>
-<span id="cb83-2"><a href="machine-learning.html#cb83-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">target_size =</span> target_size)</span>
-<span id="cb83-3"><a href="machine-learning.html#cb83-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">image_to_array</span>(test_image)</span>
-<span id="cb83-4"><a href="machine-learning.html#cb83-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">array_reshape</span>(x, <span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">dim</span>(x)))</span>
-<span id="cb83-5"><a href="machine-learning.html#cb83-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x<span class="sc">/</span><span class="dv">255</span></span>
-<span id="cb83-6"><a href="machine-learning.html#cb83-6" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">predict</span>(x)</span>
-<span id="cb83-7"><a href="machine-learning.html#cb83-7" aria-hidden="true" tabindex="-1"></a>pred</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="machine-learning.html#cb85-1" aria-hidden="true" tabindex="-1"></a>batch_size <span class="ot">&lt;-</span> <span class="dv">32</span></span>
+<span id="cb85-2"><a href="machine-learning.html#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="co">#numer of times the network will see all of the images</span></span>
+<span id="cb85-3"><a href="machine-learning.html#cb85-3" aria-hidden="true" tabindex="-1"></a>epochs <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb85-4"><a href="machine-learning.html#cb85-4" aria-hidden="true" tabindex="-1"></a><span class="co">#train model</span></span>
+<span id="cb85-5"><a href="machine-learning.html#cb85-5" aria-hidden="true" tabindex="-1"></a>hist <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">fit</span>(</span>
+<span id="cb85-6"><a href="machine-learning.html#cb85-6" aria-hidden="true" tabindex="-1"></a>  train_images,</span>
+<span id="cb85-7"><a href="machine-learning.html#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">steps_per_epoch =</span> train_images<span class="sc">$</span>n <span class="sc">%/%</span> batch_size, </span>
+<span id="cb85-8"><a href="machine-learning.html#cb85-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">epochs =</span> epochs, </span>
+<span id="cb85-9"><a href="machine-learning.html#cb85-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">validation_data =</span> validation_images,</span>
+<span id="cb85-10"><a href="machine-learning.html#cb85-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">validation_steps =</span> validation_images<span class="sc">$</span>n <span class="sc">%/%</span> batch_size,</span>
+<span id="cb85-11"><a href="machine-learning.html#cb85-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="dv">1</span></span>
+<span id="cb85-12"><a href="machine-learning.html#cb85-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb85-13"><a href="machine-learning.html#cb85-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-14"><a href="machine-learning.html#cb85-14" aria-hidden="true" tabindex="-1"></a>path_test <span class="ot">&lt;-</span> <span class="st">&quot;data/Machine_learning/Test/&quot;</span></span>
+<span id="cb85-15"><a href="machine-learning.html#cb85-15" aria-hidden="true" tabindex="-1"></a>test_data_gen <span class="ot">&lt;-</span> <span class="fu">image_data_generator</span>(<span class="at">rescale =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">255</span>)</span>
+<span id="cb85-16"><a href="machine-learning.html#cb85-16" aria-hidden="true" tabindex="-1"></a>test_images <span class="ot">&lt;-</span> <span class="fu">flow_images_from_directory</span>(path_test,</span>
+<span id="cb85-17"><a href="machine-learning.html#cb85-17" aria-hidden="true" tabindex="-1"></a>                                          test_data_gen,</span>
+<span id="cb85-18"><a href="machine-learning.html#cb85-18" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">target_size =</span> target_size,</span>
+<span id="cb85-19"><a href="machine-learning.html#cb85-19" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">class_mode =</span> <span class="st">&quot;binary&quot;</span>,</span>
+<span id="cb85-20"><a href="machine-learning.html#cb85-20" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">classes =</span> label_list,</span>
+<span id="cb85-21"><a href="machine-learning.html#cb85-21" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">shuffle =</span> F,</span>
+<span id="cb85-22"><a href="machine-learning.html#cb85-22" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">seed =</span> <span class="dv">2021</span>)</span>
+<span id="cb85-23"><a href="machine-learning.html#cb85-23" aria-hidden="true" tabindex="-1"></a><span class="co">#test model</span></span>
+<span id="cb85-24"><a href="machine-learning.html#cb85-24" aria-hidden="true" tabindex="-1"></a>model <span class="sc">%&gt;%</span> <span class="fu">evaluate</span>(test_images, </span>
+<span id="cb85-25"><a href="machine-learning.html#cb85-25" aria-hidden="true" tabindex="-1"></a>                             <span class="at">steps =</span> test_images<span class="sc">$</span>n)</span></code></pre></div>
+<pre><code>##      loss  accuracy 
+## 0.3705353 0.9268293</code></pre>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="machine-learning.html#cb87-1" aria-hidden="true" tabindex="-1"></a>test_image <span class="ot">&lt;-</span> <span class="fu">image_load</span>(<span class="st">&quot;data/Machine_learning/Test/Fries/cut_Fries027.jpg&quot;</span>,</span>
+<span id="cb87-2"><a href="machine-learning.html#cb87-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">target_size =</span> target_size)</span>
+<span id="cb87-3"><a href="machine-learning.html#cb87-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">image_to_array</span>(test_image)</span>
+<span id="cb87-4"><a href="machine-learning.html#cb87-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">array_reshape</span>(x, <span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">dim</span>(x)))</span>
+<span id="cb87-5"><a href="machine-learning.html#cb87-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> x<span class="sc">/</span><span class="dv">255</span></span>
+<span id="cb87-6"><a href="machine-learning.html#cb87-6" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> model <span class="sc">%&gt;%</span> <span class="fu">predict</span>(x)</span>
+<span id="cb87-7"><a href="machine-learning.html#cb87-7" aria-hidden="true" tabindex="-1"></a>pred</span></code></pre></div>
 <pre><code>##           [,1]
-## [1,] 0.9997392</code></pre>
+## [1,] 0.9765019</code></pre>
 <p>As you can see the algoritme has it almost completely good.This algorithm is therefore able to classify almost all photos correctly.</p>
 
 </div>

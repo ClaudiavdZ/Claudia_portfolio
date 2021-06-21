@@ -299,37 +299,7 @@ div.csl-indent {
 ## 
 ## data:  alltogether$flu
 ## W = 0.70363, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="relational-databases.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>dengue)</span></code></pre></div>
-<pre><code>## 
-##  Shapiro-Wilk normality test
-## 
-## data:  alltogether$dengue
-## W = 0.91218, p-value = 0.0009743</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="relational-databases.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>infant_mortality)</span></code></pre></div>
-<pre><code>## 
-##  Shapiro-Wilk normality test
-## 
-## data:  alltogether$infant_mortality
-## W = 0.75988, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="relational-databases.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>life_expectancy)</span></code></pre></div>
-<pre><code>## 
-##  Shapiro-Wilk normality test
-## 
-## data:  alltogether$life_expectancy
-## W = 0.93264, p-value = 9.214e-12</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="relational-databases.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>gdp)</span></code></pre></div>
-<pre><code>## 
-##  Shapiro-Wilk normality test
-## 
-## data:  alltogether$gdp
-## W = 0.53327, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="relational-databases.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>population)</span></code></pre></div>
-<pre><code>## 
-##  Shapiro-Wilk normality test
-## 
-## data:  alltogether$population
-## W = 0.74646, p-value &lt; 2.2e-16</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="relational-databases.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="relational-databases.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code></pre></div>
 <pre><code>## Loading required package: carData</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;car&#39;</code></pre>
@@ -339,7 +309,7 @@ div.csl-indent {
 <pre><code>## The following object is masked from &#39;package:purrr&#39;:
 ## 
 ##     some</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="relational-databases.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(alltogether<span class="sc">$</span>fertility, alltogether<span class="sc">$</span>flu, <span class="at">center =</span> mean)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="relational-databases.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(alltogether<span class="sc">$</span>fertility, alltogether<span class="sc">$</span>flu, <span class="at">center =</span> mean)</span></code></pre></div>
 <pre><code>## Warning in leveneTest.default(alltogether$fertility, alltogether$flu, center =
 ## mean): alltogether$flu coerced to factor.</code></pre>
 <pre><code>## Warning in anova.lm(lm(resp ~ group)): ANOVA F-tests on an essentially perfect
@@ -350,9 +320,34 @@ div.csl-indent {
 ##         1                         
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="relational-databases.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#no equal variance</span></span>
-<span id="cb62-2"><a href="relational-databases.html#cb62-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-3"><a href="relational-databases.html#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(alltogether<span class="sc">$</span>dengue, alltogether<span class="sc">$</span>infant_mortality, <span class="at">center =</span> mean)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="relational-databases.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#no equal variance</span></span>
+<span id="cb52-2"><a href="relational-databases.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span> (alltogether<span class="sc">$</span>fertility, alltogether<span class="sc">$</span>flu, <span class="at">paired =</span> <span class="cn">FALSE</span>, <span class="at">var.equal =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  alltogether$fertility and alltogether$flu
+## t = -13.387, df = 333, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -26803.84 -19935.89
+## sample estimates:
+##    mean of x    mean of y 
+##     1.837912 23371.703593</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="relational-databases.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">#there is a significant difference</span></span>
+<span id="cb54-2"><a href="relational-databases.html#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="relational-databases.html#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>dengue)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  alltogether$dengue
+## W = 0.91218, p-value = 0.0009743</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="relational-databases.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>infant_mortality)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  alltogether$infant_mortality
+## W = 0.75988, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="relational-databases.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(alltogether<span class="sc">$</span>dengue, alltogether<span class="sc">$</span>infant_mortality, <span class="at">center =</span> mean)</span></code></pre></div>
 <pre><code>## Warning in leveneTest.default(alltogether$dengue,
 ## alltogether$infant_mortality, : alltogether$infant_mortality coerced to factor.</code></pre>
 <pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = mean)
@@ -361,9 +356,34 @@ div.csl-indent {
 ##        7                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="relational-databases.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co">#no equal variance</span></span>
-<span id="cb65-2"><a href="relational-databases.html#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-3"><a href="relational-databases.html#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(alltogether<span class="sc">$</span>population, alltogether<span class="sc">$</span>life_expectancy, <span class="at">center =</span> mean)</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="relational-databases.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co">#no equal variance</span></span>
+<span id="cb61-2"><a href="relational-databases.html#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span> (alltogether<span class="sc">$</span>dengue, alltogether<span class="sc">$</span>infant_mortality, <span class="at">paired =</span> <span class="cn">FALSE</span>, <span class="at">var.equal =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  alltogether$dengue and alltogether$infant_mortality
+## t = -6.4903, df = 131.64, p-value = 1.597e-09
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -6.055011 -3.226225
+## sample estimates:
+## mean of x mean of y 
+##  5.000865  9.641484</code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="relational-databases.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#there is a significant difference</span></span>
+<span id="cb63-2"><a href="relational-databases.html#cb63-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="relational-databases.html#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>life_expectancy)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  alltogether$life_expectancy
+## W = 0.93264, p-value = 9.214e-12</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="relational-databases.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(alltogether<span class="sc">$</span>population)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  alltogether$population
+## W = 0.74646, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="relational-databases.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(alltogether<span class="sc">$</span>population, alltogether<span class="sc">$</span>life_expectancy, <span class="at">center =</span> mean)</span></code></pre></div>
 <pre><code>## Warning in leveneTest.default(alltogether$population,
 ## alltogether$life_expectancy, : alltogether$life_expectancy coerced to factor.</code></pre>
 <pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = mean)
@@ -372,7 +392,20 @@ div.csl-indent {
 ##       226                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="relational-databases.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#no equal variance</span></span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="relational-databases.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co">#no equal variance</span></span>
+<span id="cb70-2"><a href="relational-databases.html#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span> (alltogether<span class="sc">$</span>population, alltogether<span class="sc">$</span>life_expectancy, <span class="at">paired =</span> <span class="cn">FALSE</span>, <span class="at">var.equal =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  alltogether$population and alltogether$life_expectancy
+## t = 16.573, df = 363, p-value &lt; 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  37666265 47808855
+## sample estimates:
+##    mean of x    mean of y 
+## 4.273764e+07 7.720330e+01</code></pre>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="relational-databases.html#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co">#there is a significant difference</span></span></code></pre></div>
 
 </div>
             </section>
